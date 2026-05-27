@@ -1,8 +1,8 @@
 # satoshi-stylometry
 
-A reproducible Burrows' Delta analysis comparing the writings of "Satoshi Nakamoto" against four cypherpunk-era candidates: Adam Back, Hal Finney, Nick Szabo, and Wei Dai.
+A reproducible Burrows' Delta analysis comparing the writings of "Satoshi Nakamoto" against five cypherpunk-era candidates: Adam Back, Hal Finney, Nick Szabo, Wei Dai, and Len Sassaman.
 
-> **Findings in one line:** stylometric distance to Satoshi splits by register. The conversational Satoshi (forum posts + emails) is closest to Hal Finney by a wide margin. The formal-paper Satoshi (the Bitcoin whitepaper) is closest to Adam Back. Nick Szabo is the second-closest match across registers but is never first. Wei Dai is consistently furthest.
+> **Findings in one line:** stylometric distance to Satoshi splits by register. The conversational Satoshi (forum posts + emails) is closest to **Hal Finney** by a wide margin. The formal-paper Satoshi (the Bitcoin whitepaper) is closest to **Len Sassaman** (with a major caveat — see below), then **Adam Back**. Nick Szabo is second-closest across most registers but is never first. Wei Dai is consistently furthest.
 
 ## Why this exists
 
@@ -25,22 +25,38 @@ This repo runs both methods side-by-side to show the difference. The headline nu
 
 ### Aggregate Burrows' Delta from Satoshi (lower = stylometrically closer)
 
-| Candidate | Δ (function words, principled) | Δ (top-150, topic-contaminated) |
-|-----------|--------------------------------|----------------------------------|
-| **Hal Finney**   | **0.98** | 1.07 |
-| Nick Szabo       | 1.26     | 1.32 |
-| Adam Back        | 1.36     | 1.56 |
-| Wei Dai          | 1.54     | 1.73 |
+| Candidate | Δ (function words, principled) | Notes |
+|-----------|--------------------------------|-------|
+| **Hal Finney**       | **0.98** | 16k-word corpus — reliable |
+| Nick Szabo           | 1.27     | 137k-word corpus — most reliable |
+| Len Sassaman         | 1.34     | 5.5k words, 4-AUTHOR — see caveat |
+| Adam Back            | 1.35     | 4.9k-word corpus — borderline |
+| Wei Dai              | 1.54     | 1.4k-word corpus — UNDER threshold |
 
 ### Per-register Burrows' Delta (function words)
 
-| Satoshi sub-corpus | Words | 1st | 2nd | 3rd | 4th |
-|--------------------|-------|-----|-----|-----|-----|
-| BitcoinTalk posts  | 57,041 | Finney 0.93 | Szabo 1.23 | Back 1.25 | Dai 1.44 |
-| Emails             | 11,442 | Finney 0.93 | Back 1.16  | Szabo 1.18| Dai 1.28 |
-| Forum (all)        | 57,908 | Finney 0.93 | Szabo 1.23 | Back 1.24 | Dai 1.44 |
-| **Whitepaper**     | 3,571  | **Back 0.99** | Finney 1.14 | Dai 1.15 | Szabo 1.24 |
-| P2P Foundation     | 866    | (too small) | | | |
+| Satoshi sub-corpus | Words | 1st | 2nd | 3rd | 4th | 5th |
+|--------------------|-------|-----|-----|-----|-----|-----|
+| BitcoinTalk posts  | 57,041 | Finney 0.93 | Szabo 1.23 | Sassaman 1.23 | Back 1.24 | Dai 1.44 |
+| Emails             | 11,442 | Finney 0.92 | **Sassaman 1.07** | Back 1.15 | Szabo 1.18 | Dai 1.28 |
+| Forum (all)        | 57,908 | Finney 0.92 | Sassaman 1.22 | Szabo 1.23 | Back 1.23 | Dai 1.43 |
+| **Whitepaper**     | 3,571  | **Sassaman 0.87** | Back 0.98 | Finney 1.13 | Dai 1.14 | Szabo 1.24 |
+| P2P Foundation     | 866    | (too small to be meaningful) | | | | |
+
+### Sassaman caveat (read this before quoting the whitepaper result)
+
+The Sassaman result on the whitepaper (Δ=0.87, lowest of any candidate) is **the strongest signal in this dataset** but also **the result most exposed to methodological criticism**. The Sassaman "corpus" here is 5.5k words of prose extracted from `draft-sassaman-mixmaster-03`, which is a **four-author IETF draft** (Moeller, Cottrell, Palfrader, Sassaman). The function-word distribution is therefore an average of four cypherpunk-era technical writers' styles, not Sassaman's solo style.
+
+Two readings of the result:
+
+1. **Real signal.** Sassaman's stylistic fingerprint dominates the Mixmaster draft (he is the named first author of the file and was the protocol's primary maintainer), and that fingerprint matches the whitepaper. Combined with the temporal coincidence — Sassaman died May 3 2011 and Satoshi's last known email was April 26 2011, eight days prior — this is the most evidence-laden cluster the analysis produces.
+2. **Register confound.** What I'm actually measuring is "average of four cypherpunk-era technical writers in IETF prose" against "one cypherpunk-era technical writer in academic paper prose". They match because the register matches. Substituting any other 4-author cypherpunk RFC might produce the same effect.
+
+The analysis cannot distinguish (1) from (2) without a solo-author Sassaman corpus. His personal site (abditum.com) was password-protected throughout its public lifetime per Wayback Machine snapshots. He never finished his PhD. There is no clean public single-authored Sassaman corpus.
+
+The honest position: **Sassaman is now the most-deserving primary suspect** — but the evidence is two co-incidental signals (RFC-style match + death-timing), not a clean stylometric isolation.
+
+![dendrogram](results/dendrogram.png)
 
 ![dendrogram](results/dendrogram.png)
 
@@ -48,10 +64,11 @@ This repo runs both methods side-by-side to show the difference. The headline nu
 
 The signal is consistent and the register-split is the most interesting finding:
 
-- **Casual Satoshi → Finney.** Across 70k+ words of forum posts and emails, Hal Finney is the closest stylistic match by a substantial margin (Δ 0.93 vs Szabo's 1.18-1.23). Finney was operationally closest to Satoshi: he ran one of the first nodes, received the first peer-to-peer Bitcoin transaction (block 170), was an early Hashcash contributor, and was on the cypherpunks list for decades.
-- **Formal-paper Satoshi → Back.** On the 3,571-word whitepaper specifically, Back overtakes Finney (Δ 0.99 vs 1.14). Back is cited as reference [6] of the paper, was Satoshi's first known email contact (Aug 2008), and is British — and the whitepaper contains one British spelling slip (`favour`).
-- **Szabo is never first.** Despite the Aston University 2014 result favoring him, Szabo ranks second on most registers and fourth on the whitepaper itself under principled methodology. The Aston study used a methodology vulnerable to topic contamination — and on the topic-contaminated re-run in this repo, Szabo does indeed move up.
-- **Wei Dai is consistently last.** b-money is intellectually close to Bitcoin (Satoshi cites it as ref [1]) but stylistically distant. Dai's writing patterns differ in function-word distribution.
+- **Casual Satoshi → Finney.** Across 70k+ words of forum posts and emails, Hal Finney is the closest stylistic match by a substantial margin (Δ 0.92 vs next-nearest Sassaman 1.07-1.22). Finney was operationally closest to Satoshi: he ran one of the first nodes, received the first peer-to-peer Bitcoin transaction (block 170), was an early Hashcash contributor, and was on the cypherpunks list for decades.
+- **Formal-paper Satoshi → Sassaman (with caveat) > Back.** On the 3,571-word whitepaper specifically, Sassaman ranks first (Δ 0.87), Back second (Δ 0.98), Finney third (Δ 1.13). See the Sassaman caveat above — his corpus is 4-author Mixmaster RFC, so the signal is real but not isolated. Back is cited as reference [6] of the paper, was Satoshi's first known email contact (Aug 2008), and is British — the whitepaper contains one British spelling slip (`favour`).
+- **Szabo is never first.** Despite the Aston University 2014 result favoring him, Szabo ranks second on forum posts and fourth on the whitepaper itself under principled methodology. The Aston study used a methodology vulnerable to topic contamination — and on the topic-contaminated re-run in this repo, Szabo does indeed move up.
+- **Wei Dai is consistently last** on registers above 5k words. b-money is intellectually close to Bitcoin (Satoshi cites it as ref [1]) but stylistically distant. Dai's writing patterns differ in function-word distribution.
+- **Temporal coincidence on Sassaman.** Satoshi's last known direct communication was a private email to Gavin Andresen on April 26, 2011. Sassaman died May 3, 2011 — eight days later. This is not evidence on its own, but it's the most-cited reason candidate-set authors revisit Sassaman.
 
 ### Interpretive frames
 
@@ -65,8 +82,9 @@ This analysis cannot distinguish between these. It can only rule out Szabo as th
 
 ## Limitations
 
-- **Corpus imbalance.** Back has 4.9k words (Hashcash paper only). Dai has 1.4k words (b-money only). Burrows' Delta works reliably from ~5k words per author; Back is borderline and Dai is below threshold. Finney (16k) and Szabo (137k) are robust.
-- **Candidate set is incomplete.** This run excludes Len Sassaman, Stuart Haber, W. Scott Stornetta, David Chaum, Tim May, and other plausible cypherpunk-era candidates. Sassaman in particular (death timing matches Satoshi's silence) deserves inclusion in a follow-up — but his published corpus is small and hard to source.
+- **Corpus imbalance.** Back has 4.9k words (Hashcash paper only). Dai has 1.4k words (b-money only). Sassaman has 5.5k words but they are a 4-author RFC, not solo writing. Burrows' Delta works reliably from ~5k words per author; Back and Sassaman are borderline, Dai is below threshold. Finney (16k) and Szabo (137k) are robust.
+- **Sassaman corpus is multi-author.** See the dedicated Sassaman caveat section above. The Mixmaster Protocol v2 IETF draft has four named authors. This is the cleanest single block of prose closely associated with Sassaman that is publicly accessible. His personal site (abditum.com) was password-protected throughout its public lifetime.
+- **Candidate set is still incomplete.** This run excludes Stuart Haber, W. Scott Stornetta, David Chaum, Tim May, Ian Goldberg, Bram Cohen, and other plausible cypherpunk-era candidates. Adding them requires sourcing their pre-2008 single-author writings.
 - **Function-word lists vary.** The 201-word list at `src/function_words.py` is composite (Mosteller-Wallace, Burrows, stylo defaults). Using a different list may shift results within ±0.1 Delta. The relative ordering is robust to list choice in this dataset.
 - **No deliberate-misdirection control.** A pseudonymous author seeded with stylistic markers from another writer would defeat this analysis. The register-split finding is consistent with that scenario.
 - **Source register confound.** Satoshi's forum posts are conversational; Szabo's archived corpus is essays. Comparing forum-Satoshi against essay-Szabo is unavoidable given what's archived, but tilts results.

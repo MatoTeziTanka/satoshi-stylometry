@@ -144,6 +144,53 @@ def pull_hashcash():
     run(["pdftotext", "-layout", str(pdf_path), str(out)])
 
 
+def pull_sassaman_mixmaster():
+    """Mixmaster Protocol v2 IETF draft, 4-author (Moeller, Cottrell, Palfrader, Sassaman).
+    Used as Sassaman-corpus-proxy. See README 'Sassaman caveat' section.
+    """
+    out = CORPUS / "sassaman" / "mixmaster_v03_multiauthor.txt"
+    if out.exists():
+        return
+    out.parent.mkdir(parents=True, exist_ok=True)
+    raw_path = TMP / "mixmaster-03.txt"
+    if not raw_path.exists():
+        urllib.request.urlretrieve(
+            "https://www.ietf.org/archive/id/draft-sassaman-mixmaster-03.txt",
+            raw_path,
+        )
+    src = raw_path.read_text()
+    # Strip form-feed page breaks and IETF boilerplate
+    src = re.sub(r"\f+", "\n", src)
+    src = re.sub(r"Moeller, et al\.\s+Expires June 29, 2005\s+\[Page \d+\]", "", src)
+    src = re.sub(r"Internet-Draft\s+Mixmaster Protocol Version 2\s+December 2004", "", src)
+    m = re.search(r"\nAbstract\b", src)
+    if m:
+        src = src[m.start() :]
+    for stop in [
+        r"\nAuthors' Addresses",
+        r"\n\s*References\s*\n",
+        r"\nIntellectual Property",
+        r"\nFull Copyright",
+    ]:
+        m = re.search(stop, src)
+        if m:
+            src = src[: m.start()]
+            break
+    # Drop ABNF-like grammar declarations and pure-symbol lines
+    cleaned_lines = []
+    for line in src.split("\n"):
+        s = line.strip()
+        if re.match(r"^[A-Za-z\-]+\s*=\s*", s) and len(s.split()) < 8:
+            continue
+        if s and not re.search(r"[a-z]{4}", s):
+            continue
+        cleaned_lines.append(line)
+    src = "\n".join(cleaned_lines)
+    src = re.sub(r"\s*Internet-Draft\s+Mixmaster.*?\d{4}\s*\n", "\n", src)
+    src = re.sub(r"\n{3,}", "\n\n", src).strip()
+    out.write_text(src)
+
+
 def main():
     print("=== Cloning Nakamoto Institute site repo (~150MB shallow clone) ===")
     ni_root = clone_ni()
@@ -160,6 +207,9 @@ def main():
 
     print("\n=== Pulling Hashcash paper ===")
     pull_hashcash()
+
+    print("\n=== Pulling Mixmaster v03 draft (Sassaman et al — see README caveat) ===")
+    pull_sassaman_mixmaster()
 
     print("\nDone. Corpus written to", CORPUS)
     for d in sorted(CORPUS.iterdir()):
