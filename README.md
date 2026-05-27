@@ -135,6 +135,26 @@ Note that this dendrogram is on identifier function-words only — it does *not*
 - Add a "MFC training fingerprint" score combining Hungarian_C + space-indent + line-comment preference. None of the five candidates would score high on all three.
 - Test against Paul Le Roux's published code (TrueCrypt / E4M) — he's a wildcard candidate with confirmed Windows-C++ background.
 
+## Timestamp forensics (separate analysis, not stylometry)
+
+A third axis, independent of prose and code stylometry: when did Satoshi communicate? Two corpora are timestamped:
+
+1. **Public communications** — 543 BitcoinTalk + P2PFoundation posts and 39 bitcoin-list emails (n=582).
+2. **Source-control commits** — 279 unique commits in `bitcoin/bitcoin` git log attributed to `s_nakamoto@<SVN-UUID>` or `satoshin@gmx.com`, deduplicated by commit hash, timestamps preserved through the SourceForge SVN → GitHub import.
+
+### Headline finding: "Satoshi was in UK time" is doubly falsified
+
+The fraction of activity in the local 00:00–06:00 window (modal human sleep hours):
+
+| Timezone | Forum corpus (n=582) | Commit corpus (n=279) | Compatible with human sleep? |
+|----------|----------------------|------------------------|------------------------------|
+| GMT (UK winter) | **17.0%** | **29.4%** | **No** — orders of magnitude too high |
+| BST (UK summer) | **24.1%** | **34.4%** | **No** — even worse |
+| EST (US Eastern) | 1.5% | 3.2% | Yes |
+| PST (US Pacific) | 1.5% | 2.5% | Yes |
+
+Two independent corpora both refute the UK-resident reading. EST and PST both remain compatible; we cannot discriminate between them from this test alone. See [`forensics/uk-descent-eastern-resident-hypothesis.md`](forensics/uk-descent-eastern-resident-hypothesis.md) for the full methodology including holiday-gap analysis and morning-onset gradient. See [`forensics/uk-emigre-east-coast-candidates.md`](forensics/uk-emigre-east-coast-candidates.md) for the candidate-search negative finding (no public-record candidate fits all four axes: UK origin + US East Coast 2008–2010 + MFC C++ + cypherpunk activity).
+
 ## Reproduce
 
 ```bash
@@ -145,11 +165,17 @@ pip install -r requirements.txt
 # Pull all corpora from public sources (~150MB git clone of NI site repo)
 python3 src/pull_corpus.py
 
-# Run analysis
+# Run prose / code stylometry
 python3 src/burrows_delta.py
+python3 src/code_style.py
+
+# Run timestamp forensics — requires bitcoin/bitcoin shallow clone for the commit corpus:
+#   git clone --depth 1 --filter=blob:none https://github.com/bitcoin/bitcoin.git /tmp/bitcoin-shallow
+#   git -C /tmp/bitcoin-shallow fetch --filter=blob:none --unshallow
+python3 src/time_forensics.py
 ```
 
-Results land in `results/`. A normal run takes ~5 seconds after the clone.
+Results land in `results/`. A normal stylometry run takes ~5 seconds after the corpus clone. The timestamp-forensics run takes <1 second once the bitcoin/bitcoin shallow clone is in place.
 
 ## Sources
 

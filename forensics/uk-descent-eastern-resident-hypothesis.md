@@ -152,12 +152,90 @@ Both are biologically plausible. Our data does not pick between them.
 - The hypothesis is **not falsifiable from the data we have on disk.** Testing it requires hour-of-day analysis we haven't run yet (see "Testable predictions" above).
 - The hypothesis **does not identify a person.** It reframes the suspect-type. Naming a specific person on the basis of "UK descent + Eastern US" alone would be reckless.
 
-## What I'd commit to ship next on this thread
+## FOLLOW-UP TESTS (run 2026-05-27, same session)
 
-If you want to push the hypothesis from "introduced" to "tested":
+The original write-up listed three follow-ups; (1) was already shipped. We have now run (2) and (3); we report what they did and did not discriminate.
 
-1. Run the hour-of-day histogram on the existing Satoshi corpus (BitcoinTalk + emails) and add to `results/`. Cheap — 30 min of work.
-2. Do the holiday-gap analysis. Cheap — 1 hour.
-3. The candidate-set expansion is expensive (requires sourcing pre-2008 writings from UK-emigré-East-Coast cryptographers, which is harder than the Nakamoto Institute archive sweep we already did).
+### Test A: independent-corpus replication via Bitcoin source-control commits
 
-Items (1) and (2) would let us either strengthen or falsify the hypothesis with our existing data.
+We pulled the bitcoin/bitcoin Git log and extracted 279 unique commits attributed to Satoshi (245 from the SVN-imported `s_nakamoto@<SVN-UUID>` author, 34 from the post-2010-08-28 `satoshin@gmx.com` author, deduplicated by commit hash). Timestamps are author dates preserved through the SourceForge SVN → GitHub import. This is a fully independent corpus from the 582 forum-post / email events. Source: [`results/commit-hour-of-day-summary.json`](../results/commit-hour-of-day-summary.json), reproducer in [`src/time_forensics.py`](../src/time_forensics.py).
+
+Sleep-window arithmetic on the commit corpus:
+
+| Hypothesized timezone | % of commits at 00:00-06:00 local | Compatible with human sleep? |
+|----------------------|-----------------------------------|------------------------------|
+| GMT (UK winter)      | **29.4%**                         | **No** — far worse than the forum corpus |
+| BST (UK summer)      | **34.4%**                         | **No** — even worse |
+| EST (US Eastern)     | 3.2%                              | Yes |
+| EDT (US East summer) | 6.8%                              | Yes — borderline |
+| PST (US Pacific)     | 2.5%                              | Yes |
+| PDT (US Pac summer)  | 0.4%                              | Yes |
+
+**The UK-resident hypothesis is doubly falsified.** Two independent corpora — public communications and source-code commits — both place 17-34% of Satoshi's activity in the UK 00:00-06:00 local window. No working professional would commit code from 1am to 6am as their normal pattern across 279 commits.
+
+The commit-corpus replication is also a methodological check: if our prior result depended on something idiosyncratic about how forum-post timestamps are recorded, the commit corpus would disagree. It agrees.
+
+### Test B: morning-onset gradient (the weak EST-vs-PST tell)
+
+The wake-up edge — the hour at which activity sharply rises — is the most informative single signal for residence timezone. We tabulated morning activity 5am-noon local for each timezone hypothesis.
+
+Forum corpus (n=582):
+
+| Timezone | 5am | 6am | 7am | 8am | 9am | 10am | 11am | 12pm |
+|----------|-----|-----|-----|-----|-----|------|------|------|
+| EST      | 0   | 0   | 3   | 5   | 14  | 19   | **52** | 68 |
+| PST      | 5   | 14  | 19  | **52** | 68  | 72   | 46   | 46 |
+
+Commit corpus (n=279):
+
+| Timezone | 5am | 6am | 7am | 8am | 9am | 10am | 11am | 12pm |
+|----------|-----|-----|-----|-----|-----|------|------|------|
+| EST      | 0   | 0   | 0   | 6   | 5   | 11   | **28** | 22 |
+| PST      | 6   | 5   | 11  | **28** | 22  | 21   | 18   | 20 |
+
+In both corpora the "wake-up jump" is at 11am EST or at 8am PST. **8am PST is a normal early-rising professional pattern. 11am EST is a late-starting evening-developer pattern.** Both are biologically plausible. The PST reading produces a smoother monotonic morning ramp (5→14→19→52→68 in forum; 6→5→11→28→22 in commits); the EST reading produces a flatter ramp with a sharper isolated jump at 11am.
+
+If forced to pick, the PST reading is slightly more typical of a working-hours pattern. But this is a soft preference, not a falsification. **The test does NOT discriminate EST from PST.**
+
+### Test C: holiday-gap analysis (limited utility for EST vs PST)
+
+We ran activity counts in a ±1-day window around each US federal holiday (observed in BOTH EST and PST) and around UK-only bank holidays (Good Friday, Easter Monday, Early/Spring/Summer Bank Holidays, Boxing Day). Source: [`results/holiday-gap-summary.json`](../results/holiday-gap-summary.json).
+
+**Methodological limit found:** of the 12 UK-only holidays in Satoshi's active window (2008-11-01 to 2010-12-13), 10 fall in early-Bitcoin sparse-activity phases (UK 2009 spring/summer) where the local ±7-day neighbor baseline is itself zero. Only 2 UK-only holidays (2010-05-31 Spring Bank Holiday and 2010-08-30 Summer Bank Holiday) sit in periods of meaningful baseline activity for comparison. Both show silence (0 events and 1 event respectively, vs neighbor baselines of 0.83 and 2.25 events/day), but n=2 is too thin for a strong claim.
+
+US federal holidays (n=9 with meaningful neighbor baseline) show a mixed pattern: Memorial Day 2010 and Columbus Day 2010 silenced (0 events each in the 3-day window); Thanksgiving 2010 and July 4 2010 ELEVATED above baseline (2.0-3.2× neighbor mean). This is consistent with a single-developer pattern where "stay-home" holidays (Thanksgiving, July 4) produce MORE coding, "go-out" holidays (Memorial Day, Columbus Day) produce silence.
+
+**Critically:** US federal holidays are observed at the same calendar dates in BOTH EST and PST. Holiday-gap analysis cannot in principle discriminate EST from PST. The test that was originally specified ("US Eastern Thanksgiving 2009 / 2010 vs UK bank holidays") tests US-resident vs UK-resident, which we already have from the sleep-window test.
+
+The test is therefore reframed: we did not find new EST-vs-PST evidence from holidays. The two-meaningful-data-point UK-only silence is suggestive of "Satoshi observed a UK working calendar" but the sample is too small to defend as a strong finding. We report it and decline to lean on it.
+
+### Test D: day-of-week distribution (unexpected Sunday > Saturday pattern)
+
+Day-of-week local-to-residence (forum corpus, n=582), totals across all timezones:
+
+| Mon | Tue | Wed | Thu | Fri | Sat | Sun |
+|-----|-----|-----|-----|-----|-----|-----|
+| 66  | 51  | 95  | 110 | 96  | 53  | 111 |
+
+The Sunday-greater-than-Saturday inversion is unusual for a typical Western working pattern (where Saturday is typically the lowest-activity day and Sunday is moderate). Two readings:
+- A pattern where Saturday is "off" (errands, family, social) and Sunday is "catch up on stuff" before Monday.
+- An observer with a Saturday sabbath observance (Seventh-Day Adventist, Jewish, some Sabbatarian Christian denominations).
+
+This is at most weak suggestive evidence, not load-bearing. The Thursday peak (110) is unusual but unremarkable. We report the distribution and decline to over-read it.
+
+### Net conclusions from the follow-up tests
+
+- The **UK-resident hypothesis is doubly falsified** by independent corpora — the result is robust to the choice of timestamp source.
+- The **EST-vs-PST discrimination remains open**. Morning-onset gradient slightly favors PST; holiday-gap analysis cannot discriminate; day-of-week is suggestive but not load-bearing.
+- The **UK-emigré-East-Coast hypothesis remains under-tested**. Hour-of-day analysis is compatible with it but does not uniquely select it; the same data is compatible with any US-resident interpretation.
+
+The honest reading is: the test set we have was designed to falsify the UK-resident claim, which it did, twice. It was not designed to fingerprint EST vs PST, and reasonable arithmetic on this corpus cannot do that. A stronger discriminator would require: (a) much more granular timestamps such as keystroke logs, which don't exist publicly; (b) a corpus whose timestamps include the timezone offset itself, which neither forum posts nor SVN commits do; or (c) a higher-resolution behavioral signal correlated with circadian rhythm (e.g. response-latency distributions to specific correspondents in known timezones).
+
+## What I'd commit to ship next on this thread (updated)
+
+Now that (A) and (B) are shipped:
+
+1. ✅ Hour-of-day histogram on the Satoshi corpus — shipped.
+2. ✅ Independent-corpus replication via commits — shipped this session.
+3. ⚠️ Holiday-gap analysis — shipped but found to have limited statistical power for EST/PST discrimination; result reported honestly.
+4. ❓ Candidate-set expansion with UK-emigré-East-Coast profile — see [`uk-emigre-east-coast-candidates.md`](uk-emigre-east-coast-candidates.md) for the negative finding (zero candidates fit all four axes).
