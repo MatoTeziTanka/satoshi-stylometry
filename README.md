@@ -185,6 +185,72 @@ The fraction of activity in the local 00:00–06:00 window (modal human sleep ho
 
 Two independent corpora both refute the UK-resident reading. EST and PST both remain compatible; we cannot discriminate between them from this test alone. See [`forensics/uk-descent-eastern-resident-hypothesis.md`](forensics/uk-descent-eastern-resident-hypothesis.md) for the full methodology including holiday-gap analysis and morning-onset gradient. See [`forensics/uk-emigre-east-coast-candidates.md`](forensics/uk-emigre-east-coast-candidates.md) for the candidate-search negative finding (no public-record candidate fits all four axes: UK origin + US East Coast 2008–2010 + MFC C++ + cypherpunk activity).
 
+## Conclusions
+
+Across five independent forensic axes — prose stylometry, code stylometry, MFC composite fingerprint, hyphenation overlap, and timestamp distribution — **no single named candidate matches Satoshi on more than one axis.** Each axis falsifies a different reading and the cross-axis consensus narrows the candidate space to a set of attributes that no public-record individual has been documented to combine.
+
+### What every axis says, in one line each
+
+| Axis | Closest non-Satoshi candidate | What rules out the obvious reading |
+|------|------------------------------|-----------------------------------|
+| **Prose function-word Δ (aggregate)** | Hal Finney (Δ=0.94) | Δ=0.94 is large in absolute terms; Finney's match is conversational-register only; on the whitepaper specifically Finney drops to rank 4. |
+| **Prose function-word Δ (whitepaper)** | Sassaman/Mixmaster (Δ=0.86, multi-author corpus caveat); Back (Δ=0.97); solo-Sassaman (Δ=1.03) | The Mixmaster corpus is 4-author; the solo-Sassaman re-run (4,383 words) lands at Δ=1.03, removing the lead. Back is second and is consistent with the NYT April 2026 finding on prose alone but fails on code (see below). |
+| **Code identifier Δ** | Adam Back (Δ=0.81) | Driven by shared low-level systems-C vocabulary, not by Hungarian/MFC convention. Back's Hashcash is pure C, structurally unable to produce MFC class declarations. |
+| **MFC composite z-score** | None — Sassaman (-0.90) and PGP-6.5 (-1.01) tie for closest, both deeply negative. All Satoshi corpora score +3.6 to +5.3. | The three-axis composite (Hungarian_C + space-indent + line-comment) is uniquely Satoshi across the 13-month launch window. PGP-6.5 (the most plausible MFC-era wildcard) and e4m 2.01 (Le Roux direct work) both fail. |
+| **Hyphenation overlap (NYT 2026 method)** | Sassaman: 1/11 ("email") | Corpus-size limited (4,496 tokens for Back vs NYT's reported 134k posts). Not informative against the NYT result either way without matched-size corpora. |
+| **Timestamp distribution** | EST + PST both compatible | UK (GMT/BST) doubly falsified by forum + commit corpora. Eastern/Pacific US not discriminable from this test alone. |
+
+### The conjoined finding
+
+The candidate that the cross-axis result narrows toward is **a person who is:**
+
+1. **Stylistically closer to Finney than to anyone else on conversational prose** (forum posts + emails); and
+2. **Stylistically closer to Back, Sassaman, or solo-Sassaman than to anyone else on formal prose** (the whitepaper specifically); and
+3. **A Windows-C++ developer with pervasive (not incidental) MFC training** — at a rate 4× higher than PGP 6.5 (the only candidate codebase with any non-trivial MFC use); and
+4. **Resident in US Eastern or Pacific time** during 2008–2010 (UK falsified by sleep-window analysis on two independent corpora); and
+5. **A user of inconsistent technical-neologism compound forms** (`autodetect/auto-detect`, `midstate/mid-state`, `ecdsa/ec-dsa`) — Satoshi's hyphenation fingerprint contains 11 such compounds, of which 0 overlap with any candidate corpus except Sassaman's single `email/e-mail` overlap.
+
+**No public-record individual is documented to combine all five attributes.** This is the central negative finding of the repo: the cross-axis filter narrows to an empty set under the candidate space available. Either (a) the candidate exists but has not been publicly identified, (b) Satoshi was a composite of multiple authors whose individual contributions do not separately match any single profile, or (c) one or more of the axes is methodologically defective in a way that's not yet visible. The repo's discipline (issue [#1](https://github.com/MatoTeziTanka/satoshi-stylometry/issues/1)) prohibits naming a specific living individual on the basis of these results.
+
+### What this repo's evidence does NOT support
+
+- **"Satoshi was Adam Back."** Back is consistent on the whitepaper-prose axis (Δ=0.97, second behind multi-author Sassaman) and on UK-origin signals (British spelling, residence). But Back's Hashcash codebase is pure C and structurally cannot produce MFC class declarations; the code-axis ruling on Back rests on the OTHER two MFC fingerprint axes, both of which his accessible code fails. Back is also UK-resident per public record, contradicting the timestamp evidence. The NYT April 2026 finding is partially convergent on prose-whitepaper but does not survive the code-axis or timestamp-axis cross-check. See [`forensics/nyt-april-2026-adam-back.md`](forensics/nyt-april-2026-adam-back.md).
+- **"Satoshi was Hal Finney."** Finney is the closest conversational-prose match (Δ=0.92–0.94) but ranks 4th on the whitepaper, mid-pack on code identifier Δ, and his RPOW codebase has 0.1% Hungarian_C (60× below Satoshi). Operational considerations (Finney's documented active mining + bug-fix correspondence with "Satoshi" during 2009–2010) are evidence against Finney-as-Satoshi unless we posit deliberate self-correspondence, for which no primary source exists.
+- **"Satoshi was Len Sassaman."** Sassaman ranks first on the multi-author Mixmaster RFC (Δ=0.87, retracted on solo re-run at Δ=1.03), and his composite MFC z-score (−0.90) is the closest among all candidates but still deeply negative. The "temporal coincidence" argument is weak (71 days between Satoshi's last verified private email per Hearn-disclosure and Sassaman's death, not the originally claimed 8 days). See [`forensics/sassaman-solo-corpus-rerun.md`](forensics/sassaman-solo-corpus-rerun.md).
+- **"Satoshi was Nick Szabo."** Szabo is **not first on any axis** in this analysis. On the whitepaper specifically (the corpus the Aston 2014 result was strongest on), Szabo ranks **last (6 of 6)** under principled function-word features. He moves to mid-pack under topic-contaminated features, but the rank shift is attributable to subject-vocabulary overlap, not stylistic similarity. See [`forensics/topic-control-aston-2014.md`](forensics/topic-control-aston-2014.md).
+- **"Satoshi was Paul Le Roux."** Ruled out by two independent codebases (TrueCrypt 7.1a 2011 team derivative AND e4m 2.01 1999 direct single-author). Both fail every testable MFC fingerprint axis. See [`forensics/e4m-mfc-test.md`](forensics/e4m-mfc-test.md). The Le Roux ruling rests on two-codebase agreement and survives the "but TrueCrypt diverged from his personal style" objection.
+
+### Forensics-doc index
+
+Per-axis writeups, ordered by topic:
+
+**Prose stylometry**
+- [`forensics/sassaman-solo-corpus-rerun.md`](forensics/sassaman-solo-corpus-rerun.md) — multi-author Mixmaster vs solo Sassaman correction
+- [`forensics/topic-control-aston-2014.md`](forensics/topic-control-aston-2014.md) — Aston 2014 topic-contamination takedown with rank-shift table
+- [`forensics/nyt-hyphenation-replication.md`](forensics/nyt-hyphenation-replication.md) — NYT April 2026 methodology replication
+
+**Code stylometry**
+- [`forensics/intra-satoshi-style-drift.md`](forensics/intra-satoshi-style-drift.md) — three-corpus intra-Satoshi consistency across launch window
+- [`forensics/pgp-6.5-windows-mfc-test.md`](forensics/pgp-6.5-windows-mfc-test.md) — PGP team house style vs Satoshi
+- [`forensics/e4m-mfc-test.md`](forensics/e4m-mfc-test.md) — Le Roux direct single-author work
+
+**Cross-axis candidate analyses**
+- [`forensics/nyt-april-2026-adam-back.md`](forensics/nyt-april-2026-adam-back.md) — NYT 2026 Back claim, convergence + divergence per axis
+- [`forensics/uk-descent-eastern-resident-hypothesis.md`](forensics/uk-descent-eastern-resident-hypothesis.md) — timestamp falsification of UK residence
+- [`forensics/uk-emigre-east-coast-candidates.md`](forensics/uk-emigre-east-coast-candidates.md) — candidate-search negative finding under the four-axis filter
+- [`forensics/patoshi-pattern.md`](forensics/patoshi-pattern.md) — single-miner pattern in early blocks
+- [`forensics/patoshi-vs-hour-of-day-cross-reference.md`](forensics/patoshi-vs-hour-of-day-cross-reference.md) — Patoshi-pattern × timestamp cross-check
+
+### Stake of the negative finding
+
+This is a negative-result repository — its primary output is "the candidate space is empty under the cross-axis filter," not "X is Satoshi." Negative results are publishable and useful: they bound future investigations and rule out repeated litigation of already-falsified readings. The repo is built so any reader can:
+
+1. Reproduce the analyses from public sources (`src/pull_corpus.py` + `python3 src/*.py`)
+2. Add a new candidate corpus (`code-corpus/<name>/` + SOURCE.md, then re-run scripts)
+3. Apply the cross-axis filter to that candidate and see whether they pass any single axis or all five
+
+Adding new candidates is the natural future direction. The cross-axis filter has been demonstrated to be discriminating; it has not been demonstrated to be impossible to satisfy.
+
 ## Reproduce
 
 ```bash
