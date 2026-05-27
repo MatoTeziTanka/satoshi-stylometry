@@ -1,0 +1,209 @@
+3,5c3,5
+<                                           Satoshi Nakamoto
+<                                        satoshi@vistomail.com
+<                                            www.bitcoin.org
+---
+>                                            Satoshi Nakamoto
+>                                           satoshin@gmx.com
+>                                             www.bitcoin.org
+10,20c10,20
+<          payments to be sent directly from one party to another without the burdens of going
+<          through a financial institution. Digital signatures provide part of the solution, but
+<          the main benefits are lost if a trusted party is still required to prevent double-
+<          spending. We propose a solution to the double-spending problem using a peer-to-
+<          peer network. The network timestamps transactions by hashing them into an
+<          ongoing chain of hash-based proof-of-work, forming a record that cannot be
+<          changed without redoing the proof-of-work. The longest chain not only serves as
+<          proof of the sequence of events witnessed, but proof that it came from the largest
+<          pool of CPU power. As long as honest nodes control the most CPU power on the
+<          network, they can generate the longest chain and outpace any attackers. The
+<          network itself requires minimal structure. Messages are broadcasted on a best effort
+---
+>          payments to be sent directly from one party to another without going through a
+>          financial institution. Digital signatures provide part of the solution, but the main
+>          benefits are lost if a trusted third party is still required to prevent double-spending.
+>          We propose a solution to the double-spending problem using a peer-to-peer network.
+>          The network timestamps transactions by hashing them into an ongoing chain of
+>          hash-based proof-of-work, forming a record that cannot be changed without redoing
+>          the proof-of-work. The longest chain not only serves as proof of the sequence of
+>          events witnessed, but proof that it came from the largest pool of CPU power. As
+>          long as a majority of CPU power is controlled by nodes that are not cooperating to
+>          attack the network, they'll generate the longest chain and outpace attackers. The
+>          network itself requires minimal structure. Messages are broadcast on a best effort
+50c50
+<                                                      1
+---
+>                                                       1
+137a138,140
+>     To compensate for increasing hardware speed and varying interest in running nodes over time,
+> the proof-of-work difficulty is determined by a moving average targeting an average number of
+> blocks per hour. If they're generated too fast, the difficulty increases.
+142c145
+<      1)    New transactions are broadcasted to all nodes.
+---
+>      1)    New transactions are broadcast to all nodes.
+156,159d158
+<     New transaction broadcasts do not necessarily need to reach all nodes. As long as they reach
+< many nodes, they will get into a block before long. Block broadcasts are also tolerant of dropped
+< messages. If a node does not receive a block, it will request it when it receives the next block and
+< realizes it missed one.
+165c164,169
+< 6.    Incentive
+---
+>     New transaction broadcasts do not necessarily need to reach all nodes. As long as they reach
+> many nodes, they will get into a block before long. Block broadcasts are also tolerant of dropped
+> messages. If a node does not receive a block, it will request it when it receives the next block and
+> realizes it missed one.
+> 
+> 6.    Incentive
+171c175,180
+<     The incentive may also help encourage nodes to stay honest. If a greedy attacker is able to
+---
+>     The incentive can also be funded with transaction fees. If the output value of a transaction is
+> less than its input value, the difference is a transaction fee that is added to the incentive value of
+> the block containing the transaction. Once a predetermined number of coins have entered
+> circulation, the incentive can transition entirely to transaction fees and be completely inflation
+> free.
+>     The incentive may help encourage nodes to stay honest. If a greedy attacker is able to
+176,178d184
+<     To compensate for increasing hardware speed and varying interest in running nodes over time,
+< the proof-of-work difficulty is determined by a moving average targeting an average number of
+< blocks per hour. If they're generated too fast, the difficulty increases.
+204a211
+> 
+214c221,223
+< 8.    Simplified Payment Verification
+---
+> 
+>                                                             4
+> 8.     Simplified Payment Verification
+219,223c228
+< 
+< 
+< 
+<                                                             4
+< himself, but by linking it to a place in the chain, he can see that a network node has accepted it,
+---
+> himself, but by linking it to a place in the chain, he can see that a network node has accepted it,
+248,254c253,258
+< transactions for themselves and are only vulnerable to reversal, the simplified method can be
+< fooled by an attacker's fabricated transactions for as long as the attacker can continue to
+< overpower the network. One strategy to protect against this would be to accept alerts from
+< network nodes when they detect an invalid block, prompting the user's software to download the
+< full block and reported transactions to confirm the inconsistency. Businesses that receive frequent
+< payments will probably still want to run their own nodes for more independent security and
+< quicker verification.
+---
+> transactions for themselves, the simplified method can be fooled by an attacker's fabricated
+> transactions for as long as the attacker can continue to overpower the network. One strategy to
+> protect against this would be to accept alerts from network nodes when they detect an invalid
+> block, prompting the user's software to download the full block and alerted transactions to
+> confirm the inconsistency. Businesses that receive frequent payments will probably still want to
+> run their own nodes for more independent security and quicker verification.
+277c281,285
+< 10. Privacy
+---
+> 
+> 
+> 
+>                                                        5
+> 10. Privacy
+282,284c290
+< 
+<                                                        5
+< an amount to someone else, but without information linking the transaction to anyone. This is
+---
+> an amount to someone else, but without information linking the transaction to anyone. This is
+336c342,344
+< Given our assumption that p > q, the probability drops exponentially as the number of blocks the
+---
+> 
+>                                                               6
+> Given our assumption that p > q, the probability drops exponentially as the number of blocks the
+344,347c352
+< 
+< 
+<                                                               6
+<     The receiver generates a new key pair and gives the public key to the sender shortly before
+---
+>     The receiver generates a new key pair and gives the public key to the sender shortly before
+366,370c371,373
+<               k   −
+<      ∞
+<           e   q / p z−k  if k ≤ z
+<     ∑ k!     ⋅
+<                     1         if k  z
+---
+>      ∞        k   −   z−k 
+>     ∑  ke! ⋅ q / p1        if k ≤ z
+>                               if k  z
+399d401
+< Running some results, we can see the probability drop off exponentially with z.
+401,412d402
+<    q=0.1
+<    z=0            P=1.0000000
+<    z=1            P=0.2045873
+<    z=2            P=0.0509779
+<    z=3            P=0.0131722
+<    z=4            P=0.0034552
+<    z=5            P=0.0009137
+<    z=6            P=0.0002428
+<    z=7            P=0.0000647
+<    z=8            P=0.0000173
+<    z=9            P=0.0000046
+<    z=10           P=0.0000012
+416,427c406,432
+<    q=0.3
+<    z=0      P=1.0000000
+<    z=5      P=0.1773523
+<    z=10     P=0.0416605
+<    z=15     P=0.0101008
+<    z=20     P=0.0024804
+<    z=25     P=0.0006132
+<    z=30     P=0.0001522
+<    z=35     P=0.0000379
+<    z=40     P=0.0000095
+<    z=45     P=0.0000024
+<    z=50     P=0.0000006
+---
+> Running some results, we can see the probability drop off exponentially with z.
+> 
+>    q=0.1
+>    z=0     P=1.0000000
+>    z=1     P=0.2045873
+>    z=2     P=0.0509779
+>    z=3     P=0.0131722
+>    z=4     P=0.0034552
+>    z=5     P=0.0009137
+>    z=6     P=0.0002428
+>    z=7     P=0.0000647
+>    z=8     P=0.0000173
+>    z=9     P=0.0000046
+>    z=10    P=0.0000012
+> 
+>    q=0.3
+>    z=0     P=1.0000000
+>    z=5     P=0.1773523
+>    z=10    P=0.0416605
+>    z=15    P=0.0101008
+>    z=20    P=0.0024804
+>    z=25    P=0.0006132
+>    z=30    P=0.0001522
+>    z=35    P=0.0000379
+>    z=40    P=0.0000095
+>    z=45    P=0.0000024
+>    z=50    P=0.0000006
+456c461,465
+< References
+---
+> 
+> 
+> 
+>                                                   8
+> References
+473c482,484
+<                                                        8
+---
+> 
+> 
+>                                                        9

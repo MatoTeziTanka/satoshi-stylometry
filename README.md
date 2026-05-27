@@ -2,7 +2,7 @@
 
 A reproducible Burrows' Delta analysis comparing the writings of "Satoshi Nakamoto" against five cypherpunk-era candidates: Adam Back, Hal Finney, Nick Szabo, Wei Dai, and Len Sassaman.
 
-> **Findings in one line:** stylometric distance to Satoshi splits by register. The conversational Satoshi (forum posts + emails) is closest to **Hal Finney** by a wide margin. The formal-paper Satoshi (the Bitcoin whitepaper) is closest to **Len Sassaman** (with a major caveat — see below), then **Adam Back**. Nick Szabo is second-closest across most registers but is never first. Wei Dai is consistently furthest.
+> **Findings in one line:** different stylometric axes pick different candidates, and Satoshi's full fingerprint matches no single one. Prose-conversational (forum posts + emails) → **Hal Finney** (Δ 0.93). Prose-formal (the whitepaper) → **Len Sassaman** with a multi-author corpus caveat (Δ 0.87), then **Adam Back** (Δ 0.98). Code identifiers → **Adam Back** (Δ 0.78). Satoshi's MFC-style Hungarian C-prefix class naming (`CTransaction`, `CBlock`) matches **no candidate**. The honest reading is that "Satoshi" exhibits a *mosaic* of stylistic patterns that no single 2008-era candidate's published corpus fully reproduces.
 
 ## Why this exists
 
@@ -88,6 +88,52 @@ This analysis cannot distinguish between these. It can only rule out Szabo as th
 - **Function-word lists vary.** The 201-word list at `src/function_words.py` is composite (Mosteller-Wallace, Burrows, stylo defaults). Using a different list may shift results within ±0.1 Delta. The relative ordering is robust to list choice in this dataset.
 - **No deliberate-misdirection control.** A pseudonymous author seeded with stylistic markers from another writer would defeat this analysis. The register-split finding is consistent with that scenario.
 - **Source register confound.** Satoshi's forum posts are conversational; Szabo's archived corpus is essays. Comparing forum-Satoshi against essay-Szabo is unavoidable given what's archived, but tilts results.
+
+## Code-style stylometry (separate analysis, not prose)
+
+Source code is a different stylometric axis from prose. Burrows' Delta on prose function-words doesn't transfer cleanly — every codebase has its own vocabulary. Instead, we extract programming-language-invariant style features and run a separate analysis.
+
+Code corpora pulled by `src/pull_corpus.py` (additions in commit history): Satoshi (Bitcoin 0.1.3, 13.7k LOC C++, 22 files), Back (Hashcash, 9.1k LOC C, 34 files), Finney (RPOW, 10.4k LOC C, 40 files), Dai (Crypto++ 5.2.1, 43.6k LOC C++, 191 files), Sassaman (Mixmaster, 20.9k LOC C, 44 files). See [`code-corpus/*/SOURCE.md`](code-corpus/) for provenance per author.
+
+### Headline finding: Satoshi's code style is mosaicked
+
+Different axes point to different candidates. No candidate has Satoshi's full code-style fingerprint:
+
+| Axis | Satoshi value | Closest candidate |
+|------|--------------|-------------------|
+| Code function-word Delta (identifier choice) | (baseline) | **Adam Back** Δ=0.78 |
+| Brace style (Allman fraction) | 45% Allman | **Dai 44%, Finney 49%** |
+| Indent: tab vs space | **100% spaces** | None match — everyone else is mostly tabs; Sassaman closest at 23% tabs / 77% spaces |
+| Comment style | **105/KLOC line comments**, 1/KLOC block | **Wei Dai** (52 line, 5 block) |
+| Hungarian C-prefix class names (`CTransaction`, `CBlock`) | **6.4% of identifiers** | **None** — next highest is Back at 0.2% (30× less) |
+
+The Hungarian C-prefix result is the most distinctive single feature: Satoshi's reference codebase contains hundreds of `CClassName`-style identifiers (`CTransaction`, `CBlock`, `CKey`, `CCriticalSection`, `CBlockIndex`). This naming convention comes from **Microsoft Foundation Classes (MFC)** — the standard C++ framework on Windows in the 1990s-2000s. It is **not present in any of the five candidate codebases** at meaningful rates.
+
+This is consistent with Bitcoin 0.1 having been developed on Windows MSVC with MFC influence, which suggests Satoshi had a Windows-C++ background rather than the Unix-C background that characterizes Back (Stroustrup C), Finney (RPOW C), Sassaman (Mixmaster C), and even Dai's Crypto++ (which uses PascalCase classes but no C-prefix).
+
+### What this rules in / out
+
+- **Rules in:** A Windows-C++-trained developer who used MFC conventions. None of the named candidates' published code matches this background.
+- **Does not rule out:** That a candidate had separate Windows-C++ experience not reflected in their published cypherpunk-era code. Adam Back, for example, may have written Windows C++ in commercial roles that isn't on hashcash.org.
+- **Adam Back's identifier overlap with Satoshi** (Δ=0.78 on function-words) is real but partly an artifact of low-level systems-C vocabulary that both used (loop variables, buffer names). Naming-convention features (where Back is 0.2% Hungarian_C vs Satoshi's 6.4%) are more discriminating.
+
+### Caveats
+
+- **Language mismatch:** Satoshi and Dai wrote C++; Back, Finney, Sassaman wrote C. Some features (`class`, `template`, brace styles around class definitions) are language-mandated.
+- **Era mismatch:** Bitcoin 0.1.3 is 2009; Hashcash is 1997-2004; Mixmaster spans 1999-2008. Coding conventions evolve.
+- **Project-size mismatch:** Dai's Crypto++ (43k LOC) and Sassaman's Mixmaster (21k LOC) are larger and more multi-author than the single-author 10-16k LOC codebases.
+
+### Dendrogram (code function-word Burrows' Delta)
+
+![code-style-dendrogram](results/code-style-dendrogram.png)
+
+Note that this dendrogram is on identifier function-words only — it does *not* incorporate the brace/indent/comment/Hungarian features, which are the more discriminating signals. The dendrogram clustering should be read as "shared identifier vocabulary" rather than "full code-style match."
+
+### What would strengthen this analysis
+
+- Pull Windows-C++ codebases from the same era (TrueCrypt, e4m, GnuPG, Wireshark) and see if any match Satoshi's Hungarian_C rate.
+- Add a "MFC training fingerprint" score combining Hungarian_C + space-indent + line-comment preference. None of the five candidates would score high on all three.
+- Test against Paul Le Roux's published code (TrueCrypt / E4M) — he's a wildcard candidate with confirmed Windows-C++ background.
 
 ## Reproduce
 

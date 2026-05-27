@@ -3,7 +3,7 @@ __pycache__/
 .venv/
 venv/
 
-# Corpora are reassembled from public sources by src/pull_corpus.py
+# Prose corpora are reassembled from public sources by src/pull_corpus.py
 # Do not commit redistributed text.
 corpus/satoshi/*.txt
 corpus/back/*.txt
@@ -13,6 +13,17 @@ corpus/dai/*.txt
 corpus/sassaman/*.txt
 corpus/haber/*.txt
 corpus/stornetta/*.txt
+
+# Source-code corpora are reassembled by parallel pulls (see SOURCE.md
+# in each directory). Same pattern as prose corpora.
+code-corpus/*/*.c
+code-corpus/*/*.h
+code-corpus/*/*.cpp
+code-corpus/*/*.cc
+code-corpus/*/*.cxx
+code-corpus/*/*.hpp
+code-corpus/*/*.hxx
+!code-corpus/*/SOURCE.md
 
 # Keep dir structure
 !corpus/.gitkeep
