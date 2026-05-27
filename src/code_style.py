@@ -68,8 +68,14 @@ CODE_FUNCTION_WORDS = [
 
 
 def iter_source_files(author_dir: Path):
+    # rglob to support deep-nested codebases (e.g., TrueCrypt's Boot/, Core/, etc.).
+    # Excludes obvious vendored/third-party paths.
+    EXCLUDE_DIR_PARTS = {"third_party", "third-party", "vendor", "deps", "build", "dist", ".git"}
     for ext in (".c", ".cpp", ".cc", ".cxx", ".h", ".hpp", ".hxx"):
-        yield from author_dir.glob(f"*{ext}")
+        for p in author_dir.rglob(f"*{ext}"):
+            if any(part in EXCLUDE_DIR_PARTS for part in p.parts):
+                continue
+            yield p
 
 
 def load_corpus():

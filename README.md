@@ -93,7 +93,7 @@ This analysis cannot distinguish between these. It can only rule out Szabo as th
 
 Source code is a different stylometric axis from prose. Burrows' Delta on prose function-words doesn't transfer cleanly — every codebase has its own vocabulary. Instead, we extract programming-language-invariant style features and run a separate analysis.
 
-Code corpora pulled by `src/pull_corpus.py` (additions in commit history): Satoshi (Bitcoin 0.1.3, 13.7k LOC C++, 22 files), Back (Hashcash, 9.1k LOC C, 34 files), Finney (RPOW, 10.4k LOC C, 40 files), Dai (Crypto++ 5.2.1, 43.6k LOC C++, 191 files), Sassaman (Mixmaster, 20.9k LOC C, 44 files). See [`code-corpus/*/SOURCE.md`](code-corpus/) for provenance per author.
+Code corpora pulled by `src/pull_corpus.py` (additions in commit history): Satoshi (Bitcoin 0.1.3, 13.7k LOC C++, 22 files), Back (Hashcash, 9.1k LOC C, 34 files), Finney (RPOW, 10.4k LOC C, 40 files), Dai (Crypto++ 5.2.1, 43.6k LOC C++, 191 files), Sassaman (Mixmaster, 20.9k LOC C, 44 files), TrueCrypt 7.1a (91.8k LOC C/C++, 377 files — wildcard "Le Roux era" Windows-encryption corpus added 2026-05-27). See [`code-corpus/*/SOURCE.md`](code-corpus/) for provenance per author.
 
 ### Headline finding: Satoshi's code style is mosaicked
 
@@ -101,11 +101,11 @@ Different axes point to different candidates. No candidate has Satoshi's full co
 
 | Axis | Satoshi value | Closest candidate |
 |------|--------------|-------------------|
-| Code function-word Delta (identifier choice) | (baseline) | **Adam Back** Δ=0.78 |
-| Brace style (Allman fraction) | 45% Allman | **Dai 44%, Finney 49%** |
-| Indent: tab vs space | **100% spaces** | None match — everyone else is mostly tabs; Sassaman closest at 23% tabs / 77% spaces |
+| Code function-word Delta (identifier choice) | (baseline) | **Adam Back** Δ=0.80; TrueCrypt Δ=0.93 third |
+| Brace style (Allman fraction) | 45% Allman | **TrueCrypt 47%, Finney 49%, Dai 44%** |
+| Indent: tab vs space | **100% spaces** | None match — everyone else is mostly tabs; Sassaman closest at 23% tabs / 77% spaces, TrueCrypt 91% tabs |
 | Comment style | **105/KLOC line comments**, 1/KLOC block | **Wei Dai** (52 line, 5 block) |
-| Hungarian C-prefix class names (`CTransaction`, `CBlock`) | **6.4% of identifiers** | **None** — next highest is Back at 0.2% (30× less) |
+| Hungarian C-prefix class names (`CTransaction`, `CBlock`) | **6.4% of identifiers** | **None** — next highest is Back/Sassaman at 0.2% (30× less); TrueCrypt is 0.1% |
 
 The Hungarian C-prefix result is the most distinctive single feature: Satoshi's reference codebase contains hundreds of `CClassName`-style identifiers (`CTransaction`, `CBlock`, `CKey`, `CCriticalSection`, `CBlockIndex`). This naming convention comes from **Microsoft Foundation Classes (MFC)** — the standard C++ framework on Windows in the 1990s-2000s. It is **not present in any of the five candidate codebases** at meaningful rates.
 
@@ -131,9 +131,9 @@ Note that this dendrogram is on identifier function-words only — it does *not*
 
 ### What would strengthen this analysis
 
-- Pull Windows-C++ codebases from the same era (TrueCrypt, e4m, GnuPG, Wireshark) and see if any match Satoshi's Hungarian_C rate.
-- Add a "MFC training fingerprint" score combining Hungarian_C + space-indent + line-comment preference. None of the five candidates would score high on all three.
-- Test against Paul Le Roux's published code (TrueCrypt / E4M) — he's a wildcard candidate with confirmed Windows-C++ background.
+- ✅ TrueCrypt 7.1a (Le Roux-era Windows encryption codebase): tested 2026-05-27. **Result:** TrueCrypt's Hungarian_C rate is 0.1% — same as all other candidates, 60× below Satoshi's 6.4%. TrueCrypt also uses 91% tab indentation vs Satoshi's 100% spaces, and a mixed comment style (22 block + 35 line per KLOC) vs Satoshi's line-heavy (1 block + 105 line per KLOC). **The Paul Le Roux / TrueCrypt wildcard reading is ruled out by the same fingerprint absence that rules out the named candidates.** The MFC fingerprint is more discriminating, not less, when tested against the most plausible Windows-C++ wildcard.
+- Still untested: e4m 2.0.1 (Le Roux's pre-TrueCrypt direct work, 1998–2000 — distinct from TrueCrypt 7.1a which was 2011), PGP for Windows 6.x source (archive.org/details/pgp_sourcecode), Bitcoin v0.1.0 source (Jan 2009, github.com/0xMagnuz/Bitcoin-v0.1 — would let us test intra-Satoshi style-drift Nov-2008 pre-release → Jan-2009 release → Dec-2009 v0.1.3).
+- Add a "MFC training fingerprint" composite score (Hungarian_C + space-indent + line-comment preference). Currently every candidate including TrueCrypt scores low on at least one of the three; only Satoshi scores high on all three.
 
 ## Timestamp forensics (separate analysis, not stylometry)
 

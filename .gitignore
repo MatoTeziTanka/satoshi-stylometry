@@ -14,16 +14,15 @@ corpus/sassaman/*.txt
 corpus/haber/*.txt
 corpus/stornetta/*.txt
 
-# Source-code corpora are reassembled by parallel pulls (see SOURCE.md
-# in each directory). Same pattern as prose corpora.
-code-corpus/*/*.c
-code-corpus/*/*.h
-code-corpus/*/*.cpp
-code-corpus/*/*.cc
-code-corpus/*/*.cxx
-code-corpus/*/*.hpp
-code-corpus/*/*.hxx
-!code-corpus/*/SOURCE.md
+# Source-code corpora are reassembled at runtime via per-corpus pull
+# instructions in code-corpus/<author>/SOURCE.md. NOTHING from a corpus
+# directory should be committed except the SOURCE.md provenance file —
+# this is the structural fix for both "redistribute source files we shouldn't"
+# (restrictive licenses like TrueCrypt's) and the older per-extension whack-a-mole.
+code-corpus/**/*
+!code-corpus/
+!code-corpus/*/
+!code-corpus/**/SOURCE.md
 
 # Keep dir structure
 !corpus/.gitkeep
