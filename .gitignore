@@ -32,3 +32,6 @@ code-corpus/**/*
 # Local
 .DS_Store
 *.swp
+
+# Claude Code harness artifacts (worktrees, agent-state caches)
+.claude/

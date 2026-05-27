@@ -11,9 +11,9 @@ Pulled 2026-05-26 for the satoshi-stylometry per-version analysis. The community
 | File size | 183,697 bytes |
 | SHA256 | `427c63b364c6db914cf23072a09ffd53ee078397b7c6ab2d604e12865a982faa` |
 | MD5 | `b7026c5be02de23871fc1d80a49e087b` (per IA metadata) |
-| PDF CreationDate | 2008-10-03 16:49:58 EDT |
+| PDF CreationDate (raw) | `D:20081003134958-07'00'` — 2008-10-03 13:49:58 **UTC-7** (Pacific Daylight Time or Mountain Standard) |
 | Producer | OpenOffice.org 2.4 |
-| Pages | 9 |
+| Pages | **8** |
 | Word count (pdftotext -layout) | 3,514 |
 | Author email on title page | `satoshi@vistomail.com` |
 | Cross-corroboration | metzdowd.com cryptography list post 2017-08 (https://www.metzdowd.com/pipermail/cryptography/2017-August/032668.html) cites the same 183,697 size and SHA256 |
@@ -27,7 +27,7 @@ This is the PDF attached to Satoshi's 2008-10-31 metzdowd cryptography-list anno
 | Source URL | `https://bitcoin.org/bitcoin.pdf` (also identical to `https://cdn.nakamotoinstitute.org/docs/bitcoin.pdf`) |
 | File size | 184,292 bytes |
 | SHA256 | `b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553` |
-| PDF CreationDate | 2009-03-24 13:33:15 EDT |
+| PDF CreationDate (raw) | `D:20090324113315-06'00'` — 2009-03-24 11:33:15 **UTC-6** (Mountain Daylight Time or Central Standard) |
 | Producer | OpenOffice.org 2.4 |
 | Pages | 9 |
 | Word count (pdftotext -layout) | 3,571 |
@@ -79,6 +79,18 @@ Substantive changes Satoshi made between 2008-10 and 2009-03:
 7. **Grammar fix in step 1 of Section 5.** "New transactions are broadcasted to all nodes" → "New transactions are broadcast to all nodes" (matches abstract fix).
 
 8. **Layout/typography.** v2 adds a missing page-number on the SPV/Privacy page break; column alignment of the Poisson probability table is tightened; whitespace around section headers normalised.
+
+## UTC offset shift between versions
+
+**The author's UTC offset moved one hour east between v1 (Oct 2008) and v2 (Mar 2009).** v1 was created at UTC-7; v2 at UTC-6. Per the forensics PDF-axis analysis (`forensics/hidden-artifacts-survey.md`), 6 of 7 embedded font subsets are SHA256-identical between the two files — strong evidence the same machine generated both. Combined with the offset shift, the most parsimonious interpretation is:
+
+- **Same machine, OS timezone setting changed** between October 2008 and March 2009.
+- Cleanest match: **US Pacific (PDT, UTC-7) → US Mountain (MDT, UTC-6)** — a one-timezone-east shift.
+- Alternative: deliberate clock-mis-set; or the author observed DST on a non-DST timezone.
+
+This is a third independent timestamp channel beyond the forum-post and commit-corpus analyses in `forensics/uk-descent-eastern-resident-hypothesis.md`. The earlier work eliminated UK/GMT residence; this PDF channel further constrains the US-residence window to Pacific/Mountain (not Eastern).
+
+The earlier note in this document gave "EDT" for both CreationDate fields — that was an artifact of `pdfinfo` rendering in local time; the raw PDF metadata stores `-07'00'` and `-06'00'` respectively. Corrected in this revision.
 
 ## Stylometric implications for this corpus
 

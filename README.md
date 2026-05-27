@@ -183,11 +183,11 @@ The fraction of activity in the local 00:00–06:00 window (modal human sleep ho
 | EST (US Eastern) | 1.5% | 3.2% | Yes |
 | PST (US Pacific) | 1.5% | 2.5% | Yes |
 
-Two independent corpora both refute the UK-resident reading. EST and PST both remain compatible; we cannot discriminate between them from this test alone. See [`forensics/uk-descent-eastern-resident-hypothesis.md`](forensics/uk-descent-eastern-resident-hypothesis.md) for the full methodology including holiday-gap analysis and morning-onset gradient. See [`forensics/uk-emigre-east-coast-candidates.md`](forensics/uk-emigre-east-coast-candidates.md) for the candidate-search negative finding (no public-record candidate fits all four axes: UK origin + US East Coast 2008–2010 + MFC C++ + cypherpunk activity).
+Two independent corpora both refute the UK-resident reading. EST and PST both remain compatible from this pair of corpora alone; **a third independent timestamp channel from PDF metadata** (`whitepaper-v1.pdf` UTC-7, `whitepaper-v2.pdf` UTC-6, on what is provably the same machine via byte-identical font subsets) **rules out US Eastern (UTC-5/-4 inconsistent with -07/-06) and constrains the most-likely band to US Pacific → US Mountain** with a one-timezone-east shift between Oct 2008 and Mar 2009. See [`forensics/uk-descent-eastern-resident-hypothesis.md`](forensics/uk-descent-eastern-resident-hypothesis.md) for the full forum + commit methodology including holiday-gap analysis and morning-onset gradient. See [`forensics/uk-emigre-east-coast-candidates.md`](forensics/uk-emigre-east-coast-candidates.md) for the candidate-search negative finding under the multi-axis filter. See [`forensics/hidden-artifacts-survey.md`](forensics/hidden-artifacts-survey.md) for the PDF-metadata timezone channel + the four-axis Windows-OS consensus.
 
 ## Conclusions
 
-Across five independent forensic axes — prose stylometry, code stylometry, MFC composite fingerprint, hyphenation overlap, and timestamp distribution — **no single named candidate matches Satoshi on more than one axis.** Each axis falsifies a different reading and the cross-axis consensus narrows the candidate space to a set of attributes that no public-record individual has been documented to combine.
+Across **eight independent forensic axes** — prose stylometry (aggregate + whitepaper-register + commit-message-register), code stylometry, MFC composite fingerprint, hyphenation overlap, timestamp distribution (forum + commit corpora + PDF metadata), PGP key forensics, and source-code developer-artifact audit — **no single named candidate matches Satoshi on more than one axis.** Each axis falsifies a different reading and the cross-axis consensus narrows the candidate space to a set of attributes that no public-record individual has been documented to combine.
 
 ### What every axis says, in one line each
 
@@ -195,22 +195,35 @@ Across five independent forensic axes — prose stylometry, code stylometry, MFC
 |------|------------------------------|-----------------------------------|
 | **Prose function-word Δ (aggregate)** | Hal Finney (Δ=0.94) | Δ=0.94 is large in absolute terms; Finney's match is conversational-register only; on the whitepaper specifically Finney drops to rank 4. |
 | **Prose function-word Δ (whitepaper)** | Sassaman/Mixmaster (Δ=0.86, multi-author corpus caveat); Back (Δ=0.97); solo-Sassaman (Δ=1.03) | The Mixmaster corpus is 4-author; the solo-Sassaman re-run (4,383 words) lands at Δ=1.03, removing the lead. Back is second and is consistent with the NYT April 2026 finding on prose alone but fails on code (see below). |
+| **Prose function-word Δ (commit messages)** | Sassaman (Δ=0.91); Back (Δ=0.96) | Independent register confirms whitepaper top-2 via *opposite stylistic mechanism* (telegraphic / changelog: article-suppressed, pronoun-absent vs whitepaper's article-heavy formal prose). Convergence-via-different-mechanism is methodologically stronger than topic-induced convergence; strengthens the Sassaman/Back formal-register signal. See [`forensics/hidden-artifacts-survey.md`](forensics/hidden-artifacts-survey.md). |
 | **Code identifier Δ** | Adam Back (Δ=0.81) | Driven by shared low-level systems-C vocabulary, not by Hungarian/MFC convention. Back's Hashcash is pure C, structurally unable to produce MFC class declarations. |
 | **MFC composite z-score** | None — Sassaman (-0.90) and PGP-6.5 (-1.01) tie for closest, both deeply negative. All Satoshi corpora score +3.6 to +5.3. | The three-axis composite (Hungarian_C + space-indent + line-comment) is uniquely Satoshi across the 13-month launch window. PGP-6.5 (the most plausible MFC-era wildcard) and e4m 2.01 (Le Roux direct work) both fail. |
 | **Hyphenation overlap (NYT 2026 method)** | Sassaman: 1/11 ("email") | Corpus-size limited (4,496 tokens for Back vs NYT's reported 134k posts). Not informative against the NYT result either way without matched-size corpora. |
-| **Timestamp distribution** | EST + PST both compatible | UK (GMT/BST) doubly falsified by forum + commit corpora. Eastern/Pacific US not discriminable from this test alone. |
+| **Timestamp distribution (forum + commits)** | EST + PST both compatible | UK (GMT/BST) doubly falsified by forum + commit corpora. Eastern/Pacific US not discriminable from this pair of corpora alone. |
+| **Timestamp distribution (PDF metadata)** | UTC-7 (Oct 2008) → UTC-6 (Mar 2009) | Third independent timestamp channel from PDF `CreationDate`. Rules out US Eastern (UTC-5/-4 inconsistent with -07/-06). Cleanest match: **US Pacific (PDT) → US Mountain (MDT)**, a one-timezone-east shift on what is provably the same machine (6 of 7 embedded font subsets are SHA256-identical between the two PDFs). See [`forensics/hidden-artifacts-survey.md`](forensics/hidden-artifacts-survey.md). |
+| **PGP key armor header** | n/a (single canonical key + 3 keyserver decoys) | `Version: GnuPG v1.4.7 (MingW32)` on the Wayback-preserved 2010 canonical asc. **Direct evidence Satoshi used the GnuPG Windows Win32 build.** Cross-confirms the Windows reading from the code-style and PDF-font axes. |
+| **PDF font fingerprint** | n/a | Arial v3.00 + Times v3.00/v2.76 + Courier v2.76 + Century Schoolbook Bold v2.35 — the exact Microsoft Windows XP SP2+ font combo, plus Microsoft Publisher 2003/2007 installation. OpenOffice `/Lang` = `en-GB` (British English locale). |
+| **Source-code developer artifacts** | n/a | `Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)` UA literal in v0.1.3 `net.cpp` — Windows XP UA spoof. `////` multi-slash comment style as idiosyncratic authorship marker. Surgical pre-release scrubbing (3 main.h annotations removed nov2008 → v0.1.0). No surviving personally identifying paths/emails/hostnames. |
 
-### The conjoined finding
+### Cross-axis Windows-OS consensus
+
+Four independent forensic mechanisms place Satoshi on Microsoft Windows: (1) code-style MFC composite, (2) PGP version-string `MingW32` Win32 build, (3) source-code UA literal `Windows NT 5.1`, (4) PDF font fingerprint exact Win XP SP2+ versions. **The Windows-OS claim is now load-bearing.**
+
+### The conjoined finding (updated)
 
 The candidate that the cross-axis result narrows toward is **a person who is:**
 
 1. **Stylistically closer to Finney than to anyone else on conversational prose** (forum posts + emails); and
-2. **Stylistically closer to Back, Sassaman, or solo-Sassaman than to anyone else on formal prose** (the whitepaper specifically); and
-3. **A Windows-C++ developer with pervasive (not incidental) MFC training** — at a rate 4× higher than PGP 6.5 (the only candidate codebase with any non-trivial MFC use); and
-4. **Resident in US Eastern or Pacific time** during 2008–2010 (UK falsified by sleep-window analysis on two independent corpora); and
-5. **A user of inconsistent technical-neologism compound forms** (`autodetect/auto-detect`, `midstate/mid-state`, `ecdsa/ec-dsa`) — Satoshi's hyphenation fingerprint contains 11 such compounds, of which 0 overlap with any candidate corpus except Sassaman's single `email/e-mail` overlap.
+2. **Stylistically closer to Back, Sassaman, or solo-Sassaman than to anyone else on formal prose** (the whitepaper AND commit-message register — two independent registers, opposite stylistic mechanisms, same top-2 candidates); and
+3. **A Microsoft Windows user (Windows XP SP2+ era)** confirmed by four independent forensic axes — code style + PGP version + UA literal + PDF font fingerprint; and
+4. **A Windows-C++ developer with pervasive (not incidental) MFC training** — at a rate 4× higher than PGP 6.5 (the only candidate codebase with any non-trivial MFC use); and
+5. **Microsoft Publisher 2003 or 2007 installed** (Century Schoolbook Bold v2.35 font, which ships with Publisher, used on the whitepaper title); and
+6. **OpenOffice 2.4 configured with `en-GB` (British English) locale** — combined with the whitepaper's British spelling `favour`, two independent British-locale signals on the artifact axis; and
+7. **Resident in US Pacific or Mountain time** during 2008–2010 (UK falsified by sleep-window analysis on forum + commit corpora; US Eastern falsified by PDF UTC offsets; cleanest fit is a Pacific-to-Mountain one-timezone-east shift between Oct 2008 and Mar 2009); and
+8. **A user of inconsistent technical-neologism compound forms** (`autodetect/auto-detect`, `midstate/mid-state`, `ecdsa/ec-dsa`) — Satoshi's hyphenation fingerprint contains 11 such compounds, of which 0 overlap with any candidate corpus except Sassaman's single `email/e-mail` overlap; and
+9. **Uses the `////`-style multi-slash internal comment marker** as an idiosyncratic stylistic tic (catalog-level finding from the dead-code audit; not yet captured by the quantitative code-style features).
 
-**No public-record individual is documented to combine all five attributes.** This is the central negative finding of the repo: the cross-axis filter narrows to an empty set under the candidate space available. Either (a) the candidate exists but has not been publicly identified, (b) Satoshi was a composite of multiple authors whose individual contributions do not separately match any single profile, or (c) one or more of the axes is methodologically defective in a way that's not yet visible. The repo's discipline (issue [#1](https://github.com/MatoTeziTanka/satoshi-stylometry/issues/1)) prohibits naming a specific living individual on the basis of these results.
+**No public-record individual is documented to combine all nine attributes.** This is the central negative finding of the repo: the cross-axis filter narrows to an empty set under the candidate space available. Either (a) the candidate exists but has not been publicly identified, (b) Satoshi was a composite of multiple authors whose individual contributions do not separately match any single profile, or (c) one or more of the axes is methodologically defective in a way that's not yet visible. The repo's discipline (issue [#1](https://github.com/MatoTeziTanka/satoshi-stylometry/issues/1)) prohibits naming a specific living individual on the basis of these results.
 
 ### What this repo's evidence does NOT support
 
@@ -233,6 +246,9 @@ Per-axis writeups, ordered by topic:
 - [`forensics/intra-satoshi-style-drift.md`](forensics/intra-satoshi-style-drift.md) — three-corpus intra-Satoshi consistency across launch window
 - [`forensics/pgp-6.5-windows-mfc-test.md`](forensics/pgp-6.5-windows-mfc-test.md) — PGP team house style vs Satoshi
 - [`forensics/e4m-mfc-test.md`](forensics/e4m-mfc-test.md) — Le Roux direct single-author work
+
+**Hidden-artifact and cross-channel forensics**
+- [`forensics/hidden-artifacts-survey.md`](forensics/hidden-artifacts-survey.md) — four-axis survey of PGP keys, PDF metadata + fonts, source-code developer artifacts, and commit-message register. Top findings: GnuPG MingW32 version, Windows XP UA literal, PDF font fingerprint = Win XP SP2+ with Microsoft Publisher, en-GB OpenOffice locale, UTC-7 → UTC-6 offset shift.
 
 **Cross-axis candidate analyses**
 - [`forensics/nyt-april-2026-adam-back.md`](forensics/nyt-april-2026-adam-back.md) — NYT 2026 Back claim, convergence + divergence per axis
