@@ -37,24 +37,28 @@ This repo runs both methods side-by-side to show the difference. The headline nu
 
 | Satoshi sub-corpus | Words | 1st | 2nd | 3rd | 4th | 5th |
 |--------------------|-------|-----|-----|-----|-----|-----|
-| BitcoinTalk posts  | 57,041 | Finney 0.93 | Szabo 1.23 | Sassaman 1.23 | Back 1.24 | Dai 1.44 |
-| Emails             | 11,442 | Finney 0.92 | **Sassaman 1.07** | Back 1.15 | Szabo 1.18 | Dai 1.28 |
-| Forum (all)        | 57,908 | Finney 0.92 | Sassaman 1.22 | Szabo 1.23 | Back 1.23 | Dai 1.43 |
-| **Whitepaper**     | 3,571  | **Sassaman 0.87** | Back 0.98 | Finney 1.13 | Dai 1.14 | Szabo 1.24 |
+| BitcoinTalk posts  | 57,041 | Finney 0.90 | Szabo 1.19 | Sassaman 1.22 | Back 1.22 | Sassaman-solo 1.35 |
+| Emails             | 11,442 | Finney 0.89 | Sassaman 1.06 | Back 1.13 | Szabo 1.13 | Sassaman-solo 1.20 |
+| Forum (all)        | 57,908 | Finney 0.90 | Szabo 1.18 | Sassaman 1.21 | Back 1.22 | Sassaman-solo 1.34 |
+| **Whitepaper**     | 3,571  | **Back 0.97** | Sassaman (multi-author RFC) 0.86 ← *retracted, see below* | Sassaman-solo 1.03 | Finney 1.10 | Dai 1.13 |
 | P2P Foundation     | 866    | (too small to be meaningful) | | | | |
 
-### Sassaman caveat (read this before quoting the whitepaper result)
+**The whitepaper row needs reading carefully.** The Mixmaster-RFC Sassaman corpus (multi-author IETF draft) shows Δ=0.86 — appears first. But a **verified solo-Sassaman corpus** (4,383 words across two single-author Sassaman papers) shows Δ=1.03 — third place. The "Sassaman first on whitepaper" finding was substantially a Mixmaster-coauthor-blend artifact. With clean solo corpus, **Adam Back is first on the whitepaper (Δ=0.97)**, Sassaman-solo third. See [`forensics/sassaman-solo-corpus-rerun.md`](forensics/sassaman-solo-corpus-rerun.md) for the full retraction analysis.
 
-The Sassaman result on the whitepaper (Δ=0.87, lowest of any candidate) is **the strongest signal in this dataset** but also **the result most exposed to methodological criticism**. The Sassaman "corpus" here is 5.5k words of prose extracted from `draft-sassaman-mixmaster-03`, which is a **four-author IETF draft** (Moeller, Cottrell, Palfrader, Sassaman). The function-word distribution is therefore an average of four cypherpunk-era technical writers' styles, not Sassaman's solo style.
+### Sassaman caveat — the result has now been re-tested with a solo corpus
 
-Two readings of the result:
+The original Sassaman result on the whitepaper (Δ=0.86, multi-author Mixmaster corpus) was the strongest signal in this dataset and also the result most exposed to methodological criticism. An initial draft of this README listed the multi-author confound as an unresolvable caveat ("there is no clean public single-authored Sassaman corpus"). That was an overstatement — a verified solo Sassaman corpus of 4,383 words has now been assembled from primary sources (Ethics paper at Financial Cryptography Workshops 2010 + the *Faithless Endpoint* KU Leuven technical report 2007-003, both sole-author per DBLP and title pages).
 
-1. **Real signal.** The Mixmaster draft was primarily maintained by Sassaman during its IETF lifetime (his name is on the filename `draft-sassaman-mixmaster-03`, though Moeller is named first on the document), and the draft's stylistic profile matches the whitepaper. **Note on an earlier draft of this README:** an initial version stated an "8-day gap" between Satoshi's last email and Sassaman's death — that was wrong on both halves and has been corrected; see the bullet below.
-2. **Register confound.** What I'm actually measuring is "average of four cypherpunk-era technical writers in IETF prose" against "one cypherpunk-era technical writer in academic paper prose". They match because the register matches. Substituting any other 4-author cypherpunk RFC might produce the same effect.
+**With the solo corpus, the whitepaper Δ to Sassaman rises from 0.86 to 1.03** (corpus changed from 4-author IETF draft to 2-paper solo-Sassaman). **Adam Back becomes first on the whitepaper at Δ=0.97**; solo-Sassaman is third. The original "Sassaman first on whitepaper" framing is largely an artifact of averaging-with-coauthors in the Mixmaster IETF draft.
 
-The analysis cannot distinguish (1) from (2) without a solo-author Sassaman corpus. His personal site (abditum.com) was password-protected throughout its public lifetime per Wayback Machine snapshots. He never finished his PhD. There is no clean public single-authored Sassaman corpus.
+The original `corpus/sassaman/` (multi-author Mixmaster) is preserved in the repo as the auditable historical baseline. The new `corpus/sassaman-solo/` is treated as a separate "author" in the analysis so the Δ matrix shows both.
 
-The honest position: **Sassaman is now the most-deserving primary suspect** — but the evidence is two co-incidental signals (RFC-style match + death-timing), not a clean stylometric isolation.
+Full analysis in [`forensics/sassaman-solo-corpus-rerun.md`](forensics/sassaman-solo-corpus-rerun.md). The corrections preserved per session discipline:
+
+1. Initial: Sassaman first on whitepaper (Δ=0.87), interpreted as strong stylistic match.
+2. Date correction: Sassaman died July 3 2011 (not May 3 as initially listed).
+3. Gap correction: 8 days → 6.5 months → 71 days (each correction with primary source).
+4. **Solo-corpus retraction (current):** Δ=1.03 with solo corpus; Adam Back is the new closest whitepaper match. Sassaman remains a candidate-of-interest but no longer the top stylometric match on the whitepaper.
 
 ![dendrogram](results/dendrogram.png)
 
@@ -65,7 +69,7 @@ The honest position: **Sassaman is now the most-deserving primary suspect** — 
 The signal is consistent and the register-split is the most interesting finding:
 
 - **Casual Satoshi → Finney.** Across 70k+ words of forum posts and emails, Hal Finney is the closest stylistic match by a substantial margin (Δ 0.92 vs next-nearest Sassaman 1.07-1.22). Finney was operationally closest to Satoshi: he ran one of the first nodes, received the first peer-to-peer Bitcoin transaction (block 170), was an early Hashcash contributor, and was on the cypherpunks list for decades.
-- **Formal-paper Satoshi → Sassaman (with caveat) > Back.** On the 3,571-word whitepaper specifically, Sassaman ranks first (Δ 0.87), Back second (Δ 0.98), Finney third (Δ 1.13). See the Sassaman caveat above — his corpus is 4-author Mixmaster RFC, so the signal is real but not isolated. Back is cited as reference [6] of the paper, was Satoshi's first known email contact (Aug 2008), and is British — the whitepaper contains one British spelling slip (`favour`).
+- **Formal-paper Satoshi → Back (with the Sassaman correction now applied).** On the 3,571-word whitepaper specifically, after replacing the multi-author Mixmaster Sassaman corpus with a verified solo-Sassaman corpus, **Adam Back ranks first at Δ=0.97**, solo-Sassaman third at Δ=1.03, Finney fourth at Δ=1.10. Back is cited as reference [6] of the paper, was Satoshi's first known email contact (Aug 2008), and is British — the whitepaper contains one British spelling slip (`favour`). The Back whitepaper result is consistent with the NYT April 2026 investigation's finding (Cafiero ranked Back closest of 12 suspects on writing style); see [`forensics/nyt-april-2026-adam-back.md`](forensics/nyt-april-2026-adam-back.md) for our independent convergence/divergence picture on the NYT result.
 - **Szabo is never first.** Despite the Aston University 2014 result favoring him, Szabo ranks second on forum posts and fourth on the whitepaper itself under principled methodology. The Aston study used a methodology vulnerable to topic contamination — and on the topic-contaminated re-run in this repo, Szabo does indeed move up.
 - **Wei Dai is consistently last** on registers above 5k words. b-money is intellectually close to Bitcoin (Satoshi cites it as ref [1]) but stylistically distant. Dai's writing patterns differ in function-word distribution.
 - **Temporal coincidence on Sassaman.** Sassaman died 2011-07-03. Primary source: contemporaneous announcement at [Hacker News item 2723959](https://news.ycombinator.com/item?id=2723959) ("Len Sassaman has passed away"), posted 2011-07-03 16:28 UTC by his peers in the cryptography community. The community-side memorial in the Bitcoin blockchain at block 167,956 (recorded 2011-07-31, [HN announcement](https://news.ycombinator.com/item?id=2830084)) cross-confirms the date. Satoshi's last documented *public* communications were a forum post on 2010-12-12 and a bitcoin-list email on 2010-12-13 ([primary source: the JSON corpus shipped with nakamotoinstitute.org](https://github.com/nakamotoinstitute/nakamotoinstitute.org/blob/master/server/data/forum_posts.json)). The widely-cited "I've moved on to other things" *private* email to Mike Hearn is dated **2011-04-23** per the 2017 disclosure of those emails (by a Bitcointalk user "CipherionX") which Mike Hearn confirmed authentic; see [C12](CITATIONS.md) for the citation chain. A first-draft of this README incorrectly stated "8 days"; a corrected draft said "approximately 6.5 months" measured from Satoshi's last verified *public* message (2010-12-13) to Sassaman's death (2011-07-03). With the Hearn-email date now sourced, the gap from Satoshi's last verified *private* message to Sassaman's death is approximately 71 days. The temporal-coincidence framing is still weak — 71 days is not a tight match — and the case for Sassaman as candidate rests on (a) the stylometric whitepaper match (Δ=0.87, with multi-author corpus caveat) and (b) general circumstantial considerations, not on a tight timing match.
@@ -93,7 +97,7 @@ This analysis cannot distinguish between these. It can only rule out Szabo as th
 
 Source code is a different stylometric axis from prose. Burrows' Delta on prose function-words doesn't transfer cleanly — every codebase has its own vocabulary. Instead, we extract programming-language-invariant style features and run a separate analysis.
 
-Code corpora pulled by `src/pull_corpus.py` (additions in commit history): Satoshi (Bitcoin 0.1.3, 13.7k LOC C++, 22 files), Back (Hashcash, 9.1k LOC C, 34 files), Finney (RPOW, 10.4k LOC C, 40 files), Dai (Crypto++ 5.2.1, 43.6k LOC C++, 191 files), Sassaman (Mixmaster, 20.9k LOC C, 44 files), TrueCrypt 7.1a (91.8k LOC C/C++, 377 files — wildcard "Le Roux era" Windows-encryption corpus added 2026-05-27). See [`code-corpus/*/SOURCE.md`](code-corpus/) for provenance per author.
+Code corpora pulled by `src/pull_corpus.py` (additions in commit history): Satoshi (Bitcoin 0.1.3 ALPHA Dec 2009, 13.7k LOC), satoshi-v0.1.0 (Jan 2009 release, 16.6k LOC), satoshi-nov2008 (private pre-release, 3.3k LOC), Back (Hashcash, 9.1k LOC C, 34 files), Finney (RPOW, 10.4k LOC C, 40 files), Dai (Crypto++ 5.2.1, 43.6k LOC C++, 191 files), Sassaman (Mixmaster, 20.9k LOC C, 44 files), TrueCrypt 7.1a (91.8k LOC C/C++, 377 files — wildcard "Le Roux era" Windows-encryption corpus added 2026-05-27). The three Satoshi corpora span the 13-month launch window and enable an intra-Satoshi style-drift test; see [`forensics/intra-satoshi-style-drift.md`](forensics/intra-satoshi-style-drift.md). See [`code-corpus/*/SOURCE.md`](code-corpus/) for provenance per author.
 
 ### Headline finding: Satoshi's code style is mosaicked
 
@@ -114,6 +118,7 @@ This is consistent with Bitcoin 0.1 having been developed on Windows MSVC with M
 ### What this rules in / out
 
 - **Rules in:** A Windows-C++-trained developer who used MFC conventions. None of the named candidates' published code matches this background.
+- **Rules in (intra-Satoshi consistency):** The MFC convention was already at **9.6% of identifiers in the Nov 2008 pre-release** — the earliest publicly accessible Satoshi source. It rises to 6.4% in v0.1.0 (Jan 2009) and stays at 6.4% in v0.1.3 (Dec 2009). This rules out "MFC convention added by a later collaborator" — the fingerprint was baseline Satoshi from before community engagement existed. See [`forensics/intra-satoshi-style-drift.md`](forensics/intra-satoshi-style-drift.md).
 - **Does not rule out:** That a candidate had separate Windows-C++ experience not reflected in their published cypherpunk-era code. Adam Back, for example, may have written Windows C++ in commercial roles that isn't on hashcash.org.
 - **Adam Back's identifier overlap with Satoshi** (Δ=0.78 on function-words) is real but partly an artifact of low-level systems-C vocabulary that both used (loop variables, buffer names). Naming-convention features (where Back is 0.2% Hungarian_C vs Satoshi's 6.4%) are more discriminating.
 
