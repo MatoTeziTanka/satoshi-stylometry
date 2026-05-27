@@ -1,0 +1,23 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Corpora are reassembled from public sources by src/pull_corpus.py
+# Do not commit redistributed text.
+corpus/satoshi/*.txt
+corpus/back/*.txt
+corpus/szabo/*.txt
+corpus/finney/*.txt
+corpus/dai/*.txt
+corpus/sassaman/*.txt
+corpus/haber/*.txt
+corpus/stornetta/*.txt
+
+# Keep dir structure
+!corpus/.gitkeep
+!corpus/*/.gitkeep
+
+# Local
+.DS_Store
+*.swp
