@@ -19,12 +19,12 @@
       "line_comments_per_kloc": 0.2201188641866608,
       "naming_pct": {
         "snake_case": 0.4509900502413555,
-        "other": 0.011969264111910157,
         "SCREAMING_CASE": 0.03108068170623584,
+        "other": 0.011969264111910157,
         "PascalCase": 0.43631169342921877,
         "camelCase": 0.061077726332381045,
-        "Hungarian_prefix": 0.006452566249630578,
-        "Hungarian_C": 0.0021180179292680525
+        "Hungarian_C": 0.0021180179292680525,
+        "Hungarian_prefix": 0.006452566249630578
       },
       "brace_pct": {
         "allman_ratio": 0.08544600938967137,
@@ -158,9 +158,9 @@
         "PascalCase": 0.37894177326353984,
         "snake_case": 0.46285575623115055,
         "SCREAMING_CASE": 0.03836331912041691,
-        "Hungarian_prefix": 0.005269178770756058,
         "camelCase": 0.06997839174495325,
         "Hungarian_C": 0.0013981812089067609,
+        "Hungarian_prefix": 0.005269178770756058,
         "other": 0.04319339966027663
       },
       "brace_pct": {
@@ -293,10 +293,10 @@
       "line_comments_per_kloc": 1.1591962905718702,
       "naming_pct": {
         "snake_case": 0.8698901344041047,
-        "SCREAMING_CASE": 0.04355585299202498,
-        "other": 0.02922313312140985,
-        "PascalCase": 0.04093469410518097,
         "camelCase": 0.013273102448273939,
+        "PascalCase": 0.04093469410518097,
+        "other": 0.02922313312140985,
+        "SCREAMING_CASE": 0.04355585299202498,
         "Hungarian_C": 0.0014500027884669009,
         "Hungarian_prefix": 0.0016730801405387319
       },
@@ -433,8 +433,8 @@
         "PascalCase": 0.10172667648239861,
         "SCREAMING_CASE": 0.03373042430732164,
         "Hungarian_C": 0.0016062106813010306,
-        "Hungarian_prefix": 0.0010708071208673537,
         "camelCase": 0.0031856511845803773,
+        "Hungarian_prefix": 0.0010708071208673537,
         "other": 0.006558693615312542
       },
       "brace_pct": {
@@ -566,13 +566,13 @@
       "block_comments_per_kloc": 1.020705745115194,
       "line_comments_per_kloc": 105.13269174686498,
       "naming_pct": {
-        "PascalCase": 0.1447971137865337,
-        "Hungarian_C": 0.06364262840001622,
-        "SCREAMING_CASE": 0.03498317726701528,
-        "other": 0.02914589160484819,
-        "snake_case": 0.48862945397057034,
         "camelCase": 0.13320361587417406,
-        "Hungarian_prefix": 0.10559811909684219
+        "PascalCase": 0.1447971137865337,
+        "snake_case": 0.48862945397057034,
+        "other": 0.02914589160484819,
+        "Hungarian_C": 0.06364262840001622,
+        "Hungarian_prefix": 0.10559811909684219,
+        "SCREAMING_CASE": 0.03498317726701528
       },
       "brace_pct": {
         "allman_ratio": 0.44710144927536233,
@@ -703,13 +703,13 @@
       "block_comments_per_kloc": 0.0,
       "line_comments_per_kloc": 136.5327380952381,
       "naming_pct": {
+        "SCREAMING_CASE": 0.027707226968367582,
         "Hungarian_prefix": 0.15885476795197415,
         "snake_case": 0.4391595474486262,
         "camelCase": 0.14084507042253522,
-        "other": 0.010621103671207574,
         "PascalCase": 0.12699145693835143,
-        "SCREAMING_CASE": 0.027707226968367582,
-        "Hungarian_C": 0.09582082659893788
+        "Hungarian_C": 0.09582082659893788,
+        "other": 0.010621103671207574
       },
       "brace_pct": {
         "allman_ratio": 0.4883720930232558,
@@ -840,13 +840,13 @@
       "block_comments_per_kloc": 1.0257913247362251,
       "line_comments_per_kloc": 105.58323563892145,
       "naming_pct": {
-        "PascalCase": 0.1446420577103089,
-        "Hungarian_C": 0.06381506654185828,
-        "SCREAMING_CASE": 0.03495991209148997,
-        "other": 0.029262138293109762,
-        "snake_case": 0.48968295958650443,
         "camelCase": 0.13239184404379145,
-        "Hungarian_prefix": 0.1052460217329372
+        "PascalCase": 0.1446420577103089,
+        "snake_case": 0.48968295958650443,
+        "other": 0.029262138293109762,
+        "Hungarian_C": 0.06381506654185828,
+        "Hungarian_prefix": 0.1052460217329372,
+        "SCREAMING_CASE": 0.03495991209148997
       },
       "brace_pct": {
         "allman_ratio": 0.4468704512372635,
@@ -977,10 +977,10 @@
       "block_comments_per_kloc": 22.477294012589027,
       "line_comments_per_kloc": 34.598044126935726,
       "naming_pct": {
-        "PascalCase": 0.3640422613616147,
-        "snake_case": 0.35793605702184805,
         "SCREAMING_CASE": 0.07908797181045515,
+        "PascalCase": 0.3640422613616147,
         "camelCase": 0.15962788882576084,
+        "snake_case": 0.35793605702184805,
         "Hungarian_C": 0.0010559601489822036,
         "Hungarian_prefix": 0.01863999219507716,
         "other": 0.0196098686362619
@@ -1218,5 +1218,87 @@
       "sassaman",
       1.4410557069100172
     ]
+  ],
+  "mfc_composite_ranking": [
+    {
+      "author": "satoshi-nov2008",
+      "hungarian_c_raw": 0.09582082659893788,
+      "space_ratio_raw": 1.0,
+      "line_comment_raw": 136.5327380952381,
+      "z_hungarian_c": 1.8349791380062215,
+      "z_space_ratio": 1.108611792860488,
+      "z_line_comment": 1.5999450860130808,
+      "composite": 4.5435360168797905
+    },
+    {
+      "author": "satoshi-v0.1.0",
+      "hungarian_c_raw": 0.06381506654185828,
+      "space_ratio_raw": 1.0,
+      "line_comment_raw": 105.58323563892145,
+      "z_hungarian_c": 0.9578565921344822,
+      "z_space_ratio": 1.108611792860488,
+      "z_line_comment": 0.9965823916615537,
+      "composite": 3.0630507766565236
+    },
+    {
+      "author": "satoshi",
+      "hungarian_c_raw": 0.06364262840001622,
+      "space_ratio_raw": 1.0,
+      "line_comment_raw": 105.13269174686498,
+      "z_hungarian_c": 0.9531308995807617,
+      "z_space_ratio": 1.108611792860488,
+      "z_line_comment": 0.9877990072753748,
+      "composite": 3.0495416997166247
+    },
+    {
+      "author": "sassaman",
+      "hungarian_c_raw": 0.0016062106813010306,
+      "space_ratio_raw": 0.7699335548172758,
+      "line_comment_raw": 0.1437607820586544,
+      "z_hungarian_c": -0.7469862214986985,
+      "z_space_ratio": 0.5484665068952966,
+      "z_line_comment": -1.0589674747842845,
+      "composite": -1.2574871893876864
+    },
+    {
+      "author": "dai",
+      "hungarian_c_raw": 0.0013981812089067609,
+      "space_ratio_raw": 0.04782686460382758,
+      "line_comment_raw": 52.33837689133425,
+      "z_hungarian_c": -0.7526872996832941,
+      "z_space_ratio": -1.209654535770175,
+      "z_line_comment": -0.04142981805504971,
+      "composite": -2.003771653508519
+    },
+    {
+      "author": "truecrypt",
+      "hungarian_c_raw": 0.0010559601489822036,
+      "space_ratio_raw": 0.09305706539534518,
+      "line_comment_raw": 34.598044126935726,
+      "z_hungarian_c": -0.7620659179943926,
+      "z_space_ratio": -1.0995320720771073,
+      "z_line_comment": -0.3872788342235006,
+      "composite": -2.248876824295001
+    },
+    {
+      "author": "back",
+      "hungarian_c_raw": 0.0021180179292680525,
+      "space_ratio_raw": 0.3217768147345612,
+      "line_comment_raw": 0.2201188641866608,
+      "z_hungarian_c": -0.7329600688458062,
+      "z_space_ratio": -0.5426656011854091,
+      "z_line_comment": -1.0574788686836438,
+      "composite": -2.333104538714859
+    },
+    {
+      "author": "finney",
+      "hungarian_c_raw": 0.0014500027884669009,
+      "space_ratio_raw": 0.12471683866096149,
+      "line_comment_raw": 1.1591962905718702,
+      "z_hungarian_c": -0.7512671216992742,
+      "z_space_ratio": -1.0224496764440678,
+      "z_line_comment": -1.0391714892035309,
+      "composite": -2.8128882873468726
+    }
   ]
 }

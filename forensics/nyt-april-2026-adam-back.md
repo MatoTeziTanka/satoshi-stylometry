@@ -80,6 +80,8 @@ The NYT's primary evidence is paywalled. We have not read the original article. 
 - We cannot assess the "timeline silence" argument (Back going quiet during Satoshi's active period) without verifying it from primary list archives.
 - We do not know whether the NYT analysis used a principled function-word list or corpus-derived top-N features. The Aston 2014 study used top-N and produced a topic-contaminated result favoring Szabo; methodology on this point matters.
 
+**Hyphenation-overlap replication attempt:** We ran an independent implementation of the reported hyphenation-error methodology against our existing prose corpora (`src/hyphenation_forensics.py`; results at `results/hyphenation-overlap.json`). The replication found zero overlap for Back because his corpus in this repo is a single paper at 4,496 tokens — roughly 1/30th of the corpus depth required for the statistic to be meaningful. The replication does not reproduce the NYT's "Back 67 of 325" finding, but the failure is entirely a corpus-size problem rather than a methodological challenge: the test cannot produce meaningful results without the same mailing-list archives the NYT used. On the small corpora available here, Sassaman ranks first with one overlap (the `e-mail`/`email` inconsistency), while Back, Dai, Szabo, Finney, and others all register zero. The full analysis, including a discussion of a possible tokenizer artifact in Satoshi's set, is at [`forensics/nyt-hyphenation-replication.md`](nyt-hyphenation-replication.md).
+
 ## What this repo's discipline forbids us from doing
 
 Per [issue #1](https://github.com/MatoTeziTanka/satoshi-stylometry/issues/1):

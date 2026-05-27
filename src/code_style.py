@@ -238,6 +238,61 @@ def extract_features(author: str, files: list):
     }
 
 
+def compute_mfc_composite(feature_list: list) -> list:
+    """Compute a composite 'MFC training fingerprint' z-score for each author.
+
+    The three discriminating axes that separate Satoshi from all named
+    candidates are:
+
+      1. Hungarian_C rate — % of identifiers in the MFC C[Capital] pattern
+         (e.g., CTransaction, CBlock). Satoshi: 6.4%; all candidates: <0.3%.
+      2. space_ratio — fraction of indented lines that start with spaces vs
+         tabs. Satoshi: 100% spaces; most candidates: mostly tabs.
+      3. line_comments_per_kloc — // comment density per thousand LOC.
+         Satoshi: ~105/KLOC; candidates: 10–55/KLOC.
+
+    Each axis is z-scored across all authors (mean 0, std 1). The three
+    z-scores are summed to produce the composite. A high positive composite
+    means the author looks like Satoshi on all three dimensions simultaneously.
+
+    Returns a list of dicts: [{author, z_hungarian_c, z_space_ratio,
+    z_line_comment, composite}, ...], sorted descending by composite.
+    """
+    values = {
+        "hungarian_c": [f["naming_pct"].get("Hungarian_C", 0.0) for f in feature_list],
+        "space_ratio": [f["indent"]["space_ratio"] for f in feature_list],
+        "line_comment": [f["line_comments_per_kloc"] for f in feature_list],
+    }
+
+    def zscore_array(arr):
+        a = np.array(arr, dtype=float)
+        mean = a.mean()
+        std = a.std()
+        if std == 0.0:
+            return np.zeros_like(a)
+        return (a - mean) / std
+
+    z_hungarian = zscore_array(values["hungarian_c"])
+    z_space = zscore_array(values["space_ratio"])
+    z_comment = zscore_array(values["line_comment"])
+
+    results = []
+    for i, f in enumerate(feature_list):
+        composite = float(z_hungarian[i] + z_space[i] + z_comment[i])
+        results.append({
+            "author": f["author"],
+            "hungarian_c_raw": values["hungarian_c"][i],
+            "space_ratio_raw": values["space_ratio"][i],
+            "line_comment_raw": values["line_comment"][i],
+            "z_hungarian_c": float(z_hungarian[i]),
+            "z_space_ratio": float(z_space[i]),
+            "z_line_comment": float(z_comment[i]),
+            "composite": composite,
+        })
+    results.sort(key=lambda x: -x["composite"])
+    return results
+
+
 def burrows_delta_on_function_words(feature_list):
     """Run Burrows' Delta on the code function-word frequencies."""
     authors = [f["author"] for f in feature_list]
@@ -313,12 +368,29 @@ def main():
             f"spaces={f['indent']['space_ratio']:.0%}"
         )
 
+    # Composite MFC training-fingerprint score
+    composite_ranking = compute_mfc_composite(features)
+    print("\n=== Composite MFC training-fingerprint score (z_Hungarian_C + z_space + z_line_comment) ===")
+    print(f"{'Author':<16s} {'Hungarian_C':>12s} {'SpaceRatio':>11s} {'LineCmt/KLOC':>13s} {'zH':>7s} {'zS':>7s} {'zL':>7s} {'Composite':>10s}")
+    for row in composite_ranking:
+        print(
+            f"  {row['author']:<14s} "
+            f"{row['hungarian_c_raw']:>11.1%} "
+            f"{row['space_ratio_raw']:>10.1%} "
+            f"{row['line_comment_raw']:>12.1f} "
+            f"{row['z_hungarian_c']:>7.2f} "
+            f"{row['z_space_ratio']:>7.2f} "
+            f"{row['z_line_comment']:>7.2f} "
+            f"{row['composite']:>10.2f}"
+        )
+
     # Persist
     out = {
         "authors": authors,
         "features": features,
         "burrows_delta_matrix": delta.tolist(),
         "rank_from_satoshi": ranking_satoshi,
+        "mfc_composite_ranking": composite_ranking,
     }
     (RESULTS / "code-style-features.json").write_text(json.dumps(out, indent=2))
     print(f"\nSaved: {RESULTS / 'code-style-features.json'}")

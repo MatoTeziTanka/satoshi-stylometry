@@ -134,6 +134,23 @@ This is consistent with Bitcoin 0.1 having been developed on Windows MSVC with M
 
 Note that this dendrogram is on identifier function-words only — it does *not* incorporate the brace/indent/comment/Hungarian features, which are the more discriminating signals. The dendrogram clustering should be read as "shared identifier vocabulary" rather than "full code-style match."
 
+### Composite MFC training-fingerprint score
+
+Hungarian_C rate, space-indent ratio, and line-comment density are each reported separately above. They are also the three axes on which every named candidate (including TrueCrypt) scores low while all three Satoshi corpora score high. To make this pattern legible as a single number, `src/code_style.py` now computes a composite z-score: each of the three features is z-scored across all authors (mean 0, std 1), and the three z-scores are summed. A high positive composite means the author is simultaneously above average on all three dimensions. The composite is appended to `results/code-style-features.json` under `mfc_composite_ranking`.
+
+| Author | Hungarian_C | Space ratio | Line cmt/KLOC | z_H | z_S | z_L | Composite |
+|--------|-------------|-------------|---------------|-----|-----|-----|-----------|
+| satoshi-nov2008 | 9.6% | 100% | 136.5 | +1.83 | +1.11 | +1.60 | **+4.54** |
+| satoshi-v0.1.0 | 6.4% | 100% | 105.6 | +0.96 | +1.11 | +1.00 | **+3.06** |
+| satoshi (v0.1.3) | 6.4% | 100% | 105.1 | +0.95 | +1.11 | +0.99 | **+3.05** |
+| sassaman | 0.2% | 77% | 0.1 | -0.75 | +0.55 | -1.06 | -1.26 |
+| dai | 0.1% | 5% | 52.3 | -0.75 | -1.21 | -0.04 | -2.00 |
+| truecrypt | 0.1% | 9% | 34.6 | -0.76 | -1.10 | -0.39 | -2.25 |
+| back | 0.2% | 32% | 0.2 | -0.73 | -0.54 | -1.06 | -2.33 |
+| finney | 0.1% | 13% | 1.2 | -0.75 | -1.02 | -1.04 | -2.81 |
+
+The composite shows a clean gap: all three Satoshi corpora score above +3.0; every candidate (named or wildcard) scores below -1.2. The three-dimensional MFC-training fingerprint is self-consistent across the 13-month Satoshi source window (Nov 2008 pre-release through Dec 2009 v0.1.3) and is absent from all candidate codebases analyzed. Sassaman ranks closest among candidates (+0.55 on space-indent due to his higher-than-average space ratio) but is still negative overall (-1.26) because his line-comment density is near-zero (0.1/KLOC vs Satoshi's 105/KLOC).
+
 ### What would strengthen this analysis
 
 - ✅ TrueCrypt 7.1a (Le Roux-era Windows encryption codebase): tested 2026-05-27. **Result:** TrueCrypt's Hungarian_C rate is 0.1% — same as all other candidates, 60× below Satoshi's 6.4%. TrueCrypt also uses 91% tab indentation vs Satoshi's 100% spaces, and a mixed comment style (22 block + 35 line per KLOC) vs Satoshi's line-heavy (1 block + 105 line per KLOC). **The Paul Le Roux / TrueCrypt wildcard reading is ruled out by the same fingerprint absence that rules out the named candidates.** The MFC fingerprint is more discriminating, not less, when tested against the most plausible Windows-C++ wildcard.
