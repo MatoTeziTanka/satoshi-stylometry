@@ -1,0 +1,249 @@
+{
+  "satoshi_set_size": 11,
+  "satoshi_inconsistent_compounds_sorted": [
+    "autodetect",
+    "connecting",
+    "ecdsa",
+    "email",
+    "midstate",
+    "precompiled",
+    "publickey",
+    "rebroadcast",
+    "rebroadcasting",
+    "redo",
+    "redownload"
+  ],
+  "per_author": {
+    "back": {
+      "total_word_tokens": 4496,
+      "n_inconsistent_compounds": 0,
+      "inconsistent_compounds": {}
+    },
+    "dai": {
+      "total_word_tokens": 1356,
+      "n_inconsistent_compounds": 0,
+      "inconsistent_compounds": {}
+    },
+    "finney": {
+      "total_word_tokens": 16291,
+      "n_inconsistent_compounds": 1,
+      "inconsistent_compounds": {
+        "online": {
+          "hyphenated_form": "on-line",
+          "hyphenated_count": 3,
+          "unhyphenated_count": 2
+        }
+      }
+    },
+    "haber": {
+      "total_word_tokens": 0,
+      "n_inconsistent_compounds": 0,
+      "inconsistent_compounds": {}
+    },
+    "sassaman": {
+      "total_word_tokens": 4589,
+      "n_inconsistent_compounds": 1,
+      "inconsistent_compounds": {
+        "email": {
+          "hyphenated_form": "e-mail",
+          "hyphenated_count": 10,
+          "unhyphenated_count": 3
+        }
+      }
+    },
+    "sassaman-solo": {
+      "total_word_tokens": 4285,
+      "n_inconsistent_compounds": 0,
+      "inconsistent_compounds": {}
+    },
+    "satoshi": {
+      "total_word_tokens": 131210,
+      "n_inconsistent_compounds": 11,
+      "inconsistent_compounds": {
+        "email": {
+          "hyphenated_form": "e-mail",
+          "hyphenated_count": 24,
+          "unhyphenated_count": 3
+        },
+        "publickey": {
+          "hyphenated_form": "public-key",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 2
+        },
+        "ecdsa": {
+          "hyphenated_form": "ec-dsa",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 20
+        },
+        "redownload": {
+          "hyphenated_form": "re-download",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 12
+        },
+        "precompiled": {
+          "hyphenated_form": "pre-compiled",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 8
+        },
+        "midstate": {
+          "hyphenated_form": "mid-state",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 16
+        },
+        "redo": {
+          "hyphenated_form": "re-do",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 6
+        },
+        "rebroadcasting": {
+          "hyphenated_form": "re-broadcasting",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 2
+        },
+        "autodetect": {
+          "hyphenated_form": "auto-detect",
+          "hyphenated_count": 10,
+          "unhyphenated_count": 2
+        },
+        "connecting": {
+          "hyphenated_form": "connect-ing",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 16
+        },
+        "rebroadcast": {
+          "hyphenated_form": "re-broadcast",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 6
+        }
+      }
+    },
+    "stornetta": {
+      "total_word_tokens": 0,
+      "n_inconsistent_compounds": 0,
+      "inconsistent_compounds": {}
+    },
+    "szabo": {
+      "total_word_tokens": 136365,
+      "n_inconsistent_compounds": 11,
+      "inconsistent_compounds": {
+        "multiparty": {
+          "hyphenated_form": "multi-party",
+          "hyphenated_count": 12,
+          "unhyphenated_count": 37
+        },
+        "online": {
+          "hyphenated_form": "on-line",
+          "hyphenated_count": 3,
+          "unhyphenated_count": 77
+        },
+        "timestamping": {
+          "hyphenated_form": "time-stamping",
+          "hyphenated_count": 5,
+          "unhyphenated_count": 2
+        },
+        "timestamp": {
+          "hyphenated_form": "time-stamp",
+          "hyphenated_count": 3,
+          "unhyphenated_count": 4
+        },
+        "hourglass": {
+          "hyphenated_form": "hour-glass",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 2
+        },
+        "tradeoffs": {
+          "hyphenated_form": "trade-offs",
+          "hyphenated_count": 3,
+          "unhyphenated_count": 13
+        },
+        "nonexclusive": {
+          "hyphenated_form": "non-exclusive",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 2
+        },
+        "offline": {
+          "hyphenated_form": "off-line",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 9
+        },
+        "handaxes": {
+          "hyphenated_form": "hand-axes",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 2
+        },
+        "superpolynomial": {
+          "hyphenated_form": "super-polynomial",
+          "hyphenated_count": 2,
+          "unhyphenated_count": 3
+        },
+        "nonexlusive": {
+          "hyphenated_form": "non-exlusive",
+          "hyphenated_count": 3,
+          "unhyphenated_count": 2
+        }
+      }
+    }
+  },
+  "overlaps_with_satoshi": {
+    "back": {
+      "n_candidate_inconsistent": 0,
+      "n_overlap_with_satoshi": 0,
+      "overlap_rate_of_satoshi_set": 0.0,
+      "overlap_rate_of_candidate_set": 0.0,
+      "overlap_words_sorted": []
+    },
+    "dai": {
+      "n_candidate_inconsistent": 0,
+      "n_overlap_with_satoshi": 0,
+      "overlap_rate_of_satoshi_set": 0.0,
+      "overlap_rate_of_candidate_set": 0.0,
+      "overlap_words_sorted": []
+    },
+    "finney": {
+      "n_candidate_inconsistent": 1,
+      "n_overlap_with_satoshi": 0,
+      "overlap_rate_of_satoshi_set": 0.0,
+      "overlap_rate_of_candidate_set": 0.0,
+      "overlap_words_sorted": []
+    },
+    "haber": {
+      "n_candidate_inconsistent": 0,
+      "n_overlap_with_satoshi": 0,
+      "overlap_rate_of_satoshi_set": 0.0,
+      "overlap_rate_of_candidate_set": 0.0,
+      "overlap_words_sorted": []
+    },
+    "sassaman": {
+      "n_candidate_inconsistent": 1,
+      "n_overlap_with_satoshi": 1,
+      "overlap_rate_of_satoshi_set": 0.09090909090909091,
+      "overlap_rate_of_candidate_set": 1.0,
+      "overlap_words_sorted": [
+        "email"
+      ]
+    },
+    "sassaman-solo": {
+      "n_candidate_inconsistent": 0,
+      "n_overlap_with_satoshi": 0,
+      "overlap_rate_of_satoshi_set": 0.0,
+      "overlap_rate_of_candidate_set": 0.0,
+      "overlap_words_sorted": []
+    },
+    "stornetta": {
+      "n_candidate_inconsistent": 0,
+      "n_overlap_with_satoshi": 0,
+      "overlap_rate_of_satoshi_set": 0.0,
+      "overlap_rate_of_candidate_set": 0.0,
+      "overlap_words_sorted": []
+    },
+    "szabo": {
+      "n_candidate_inconsistent": 11,
+      "n_overlap_with_satoshi": 0,
+      "overlap_rate_of_satoshi_set": 0.0,
+      "overlap_rate_of_candidate_set": 0.0,
+      "overlap_words_sorted": []
+    }
+  },
+  "method_caveat": "Best-faith reproduction of NYT April 2026 methodology from secondary trade-press summaries. The NYT article is paywalled; exact tokenization rules, normalization choices, and threshold conventions are not published. Differences in those choices could move overlap counts by 10-30 percent.",
+  "tokenization_rules": "Lowercase. Strip URLs and emails. Word = letter-run with optional internal hyphens. Frequency filter: each form must appear >=2 times in the corpus to be counted as 'used by the author' for the purposes of the inconsistency test (single occurrences may be quoted material or typos)."
+}

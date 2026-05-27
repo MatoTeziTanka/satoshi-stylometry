@@ -11,6 +11,7 @@ corpus/szabo/*.txt
 corpus/finney/*.txt
 corpus/dai/*.txt
 corpus/sassaman/*.txt
+corpus/sassaman-solo/*.txt
 corpus/haber/*.txt
 corpus/stornetta/*.txt
 

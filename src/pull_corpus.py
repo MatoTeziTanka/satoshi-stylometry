@@ -191,6 +191,35 @@ def pull_sassaman_mixmaster():
     out.write_text(src)
 
 
+def pull_sassaman_solo():
+    """Two solo-authored Sassaman papers — formal-technical register baseline.
+
+    Replaces the multi-author Mixmaster draft as the primary Sassaman comparison.
+    See corpus/sassaman-solo/SOURCE.md for sole-author verification and caveats.
+    """
+    out_dir = CORPUS / "sassaman-solo"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    targets = [
+        (
+            "ethics",
+            "https://cosicdatabase.esat.kuleuven.be/backend/publications/files/conferencepaper/1433",
+        ),
+        (
+            "faithless",
+            "https://nakamoto-research.obxium.com/data/article-896.pdf",
+        ),
+    ]
+    TMP.mkdir(parents=True, exist_ok=True)
+    for stem, url in targets:
+        out = out_dir / f"{stem}.txt"
+        if out.exists():
+            continue
+        pdf_path = TMP / f"sassaman-{stem}.pdf"
+        if not pdf_path.exists():
+            urllib.request.urlretrieve(url, pdf_path)
+        run(["pdftotext", "-layout", str(pdf_path), str(out)])
+
+
 def main():
     print("=== Cloning Nakamoto Institute site repo (~150MB shallow clone) ===")
     ni_root = clone_ni()
@@ -210,6 +239,9 @@ def main():
 
     print("\n=== Pulling Mixmaster v03 draft (Sassaman et al — see README caveat) ===")
     pull_sassaman_mixmaster()
+
+    print("\n=== Pulling Sassaman solo-authored papers (Ethics + Faithless Endpoint) ===")
+    pull_sassaman_solo()
 
     print("\nDone. Corpus written to", CORPUS)
     for d in sorted(CORPUS.iterdir()):
