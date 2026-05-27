@@ -2,7 +2,7 @@
 
 A reproducible Burrows' Delta analysis comparing the writings of "Satoshi Nakamoto" against five cypherpunk-era candidates: Adam Back, Hal Finney, Nick Szabo, Wei Dai, and Len Sassaman.
 
-> **Findings in one line:** different stylometric axes pick different candidates, and Satoshi's full fingerprint matches no single one. Prose-conversational (forum posts + emails) → **Hal Finney** (Δ 0.93). Prose-formal (the whitepaper) → **Len Sassaman** with a multi-author corpus caveat (Δ 0.87), then **Adam Back** (Δ 0.98). Code identifiers → **Adam Back** (Δ 0.78). Satoshi's MFC-style Hungarian C-prefix class naming (`CTransaction`, `CBlock`) matches **no candidate**. The honest reading is that "Satoshi" exhibits a *mosaic* of stylistic patterns that no single 2008-era candidate's published corpus fully reproduces.
+> **Findings in one line:** different stylometric axes pick different candidates, and Satoshi's full fingerprint matches no single one. Prose-conversational (forum posts + emails) → **Hal Finney** (Δ 0.93). Prose-formal (the whitepaper) → **Len Sassaman** with a multi-author corpus caveat (Δ 0.87), then **Adam Back** (Δ 0.98). Code identifiers → **Adam Back** (Δ 0.78). Satoshi's MFC-style Hungarian C-prefix class naming (`CTransaction`, `CBlock`) at 6.4% **is not matched by any candidate** — PGP 6.5 (the closest non-Satoshi at 0.8%) is still 8× below Satoshi and fails on the other two MFC fingerprint axes. The honest reading is that "Satoshi" exhibits a *mosaic* of stylistic patterns that no single 2008-era candidate's published corpus fully reproduces.
 
 ## Why this exists
 
@@ -97,7 +97,7 @@ This analysis cannot distinguish between these. It can only rule out Szabo as th
 
 Source code is a different stylometric axis from prose. Burrows' Delta on prose function-words doesn't transfer cleanly — every codebase has its own vocabulary. Instead, we extract programming-language-invariant style features and run a separate analysis.
 
-Code corpora pulled by `src/pull_corpus.py` (additions in commit history): Satoshi (Bitcoin 0.1.3 ALPHA Dec 2009, 13.7k LOC), satoshi-v0.1.0 (Jan 2009 release, 16.6k LOC), satoshi-nov2008 (private pre-release, 3.3k LOC), Back (Hashcash, 9.1k LOC C, 34 files), Finney (RPOW, 10.4k LOC C, 40 files), Dai (Crypto++ 5.2.1, 43.6k LOC C++, 191 files), Sassaman (Mixmaster, 20.9k LOC C, 44 files), TrueCrypt 7.1a (91.8k LOC C/C++, 377 files — wildcard "Le Roux era" Windows-encryption corpus added 2026-05-27). The three Satoshi corpora span the 13-month launch window and enable an intra-Satoshi style-drift test; see [`forensics/intra-satoshi-style-drift.md`](forensics/intra-satoshi-style-drift.md). See [`code-corpus/*/SOURCE.md`](code-corpus/) for provenance per author.
+Code corpora pulled by `src/pull_corpus.py` (additions in commit history): Satoshi (Bitcoin 0.1.3 ALPHA Dec 2009, 13.7k LOC), satoshi-v0.1.0 (Jan 2009 release, 16.6k LOC), satoshi-nov2008 (private pre-release, 3.3k LOC), Back (Hashcash, 9.1k LOC C, 34 files), Finney (RPOW, 10.4k LOC C, 40 files), Dai (Crypto++ 5.2.1, 43.6k LOC C++, 191 files), Sassaman (Mixmaster, 20.9k LOC C, 44 files), TrueCrypt 7.1a (91.8k LOC C/C++, 377 files — wildcard "Le Roux era" Windows-encryption corpus added 2026-05-27), PGP-6.5 (Network Associates PGP for Windows 6.5.1i, 1999, 567k LOC C/C++, 1,884 files — wildcard "1990s Windows-C++ MFC-era cypherpunk-adjacent team codebase" added 2026-05-27, see [`forensics/pgp-6.5-windows-mfc-test.md`](forensics/pgp-6.5-windows-mfc-test.md)). The three Satoshi corpora span the 13-month launch window and enable an intra-Satoshi style-drift test; see [`forensics/intra-satoshi-style-drift.md`](forensics/intra-satoshi-style-drift.md). See [`code-corpus/*/SOURCE.md`](code-corpus/) for provenance per author.
 
 ### Headline finding: Satoshi's code style is mosaicked
 
@@ -107,13 +107,13 @@ Different axes point to different candidates. No candidate has Satoshi's full co
 |------|--------------|-------------------|
 | Code function-word Delta (identifier choice) | (baseline) | **Adam Back** Δ=0.80; TrueCrypt Δ=0.93 third |
 | Brace style (Allman fraction) | 45% Allman | **TrueCrypt 47%, Finney 49%, Dai 44%** |
-| Indent: tab vs space | **100% spaces** | None match — everyone else is mostly tabs; Sassaman closest at 23% tabs / 77% spaces, TrueCrypt 91% tabs |
-| Comment style | **105/KLOC line comments**, 1/KLOC block | **Wei Dai** (52 line, 5 block) |
-| Hungarian C-prefix class names (`CTransaction`, `CBlock`) | **6.4% of identifiers** | **None** — next highest is Back/Sassaman at 0.2% (30× less); TrueCrypt is 0.1% |
+| Indent: tab vs space | **100% spaces** | None match — everyone else is mostly tabs; Sassaman closest at 23% tabs / 77% spaces, PGP 6.5 71% tabs, TrueCrypt 91% tabs |
+| Comment style | **105/KLOC line comments**, 1/KLOC block | **Wei Dai** (52 line, 5 block); **PGP 6.5** (45 line, 67 block — high line density but block-heavy ratio inverted from Satoshi) |
+| Hungarian C-prefix class names (`CTransaction`, `CBlock`) | **6.4% of identifiers** | **None match Satoshi's rate** — **PGP 6.5 is the highest non-Satoshi at 0.8%** (still 8× below Satoshi); all other candidates 0.1–0.2%; TrueCrypt 0.1%. PGP has incidental MFC use; Satoshi has pervasive MFC house style. |
 
-The Hungarian C-prefix result is the most distinctive single feature: Satoshi's reference codebase contains hundreds of `CClassName`-style identifiers (`CTransaction`, `CBlock`, `CKey`, `CCriticalSection`, `CBlockIndex`). This naming convention comes from **Microsoft Foundation Classes (MFC)** — the standard C++ framework on Windows in the 1990s-2000s. It is **not present in any of the five candidate codebases** at meaningful rates.
+The Hungarian C-prefix result is the most distinctive single feature: Satoshi's reference codebase contains hundreds of `CClassName`-style identifiers (`CTransaction`, `CBlock`, `CKey`, `CCriticalSection`, `CBlockIndex`). This naming convention comes from **Microsoft Foundation Classes (MFC)** — the standard C++ framework on Windows in the 1990s-2000s. **The only candidate codebase with any non-trivial MFC usage is PGP for Windows 6.5.1i** (Network Associates, 1999) at 0.8% — 4× to 8× higher than every other candidate but still 8× below Satoshi's 6.4%, and PGP 6.5 fails on the other two MFC fingerprint axes (71% tab indent vs Satoshi's 100% spaces, block-heavy comment ratio vs Satoshi's line-heavy). PGP 6.5's MFC usage is incidental (~194 `class C[...]` declarations across 567k LOC of mostly non-MFC code); Satoshi's MFC usage is pervasive (the codebase is written in MFC house style throughout). See [`forensics/pgp-6.5-windows-mfc-test.md`](forensics/pgp-6.5-windows-mfc-test.md) for the full PGP 6.5 result.
 
-This is consistent with Bitcoin 0.1 having been developed on Windows MSVC with MFC influence, which suggests Satoshi had a Windows-C++ background rather than the Unix-C background that characterizes Back (Stroustrup C), Finney (RPOW C), Sassaman (Mixmaster C), and even Dai's Crypto++ (which uses PascalCase classes but no C-prefix).
+This is consistent with Bitcoin 0.1 having been developed on Windows MSVC with MFC influence, which suggests Satoshi had a Windows-C++ background rather than the Unix-C background that characterizes Back (Stroustrup C), Finney (RPOW C), Sassaman (Mixmaster C), and even Dai's Crypto++ (which uses PascalCase classes but no C-prefix). The PGP 6.5 test rules out the "Satoshi was a PGP-team contributor" reading at the codebase house-style level but does not exclude individual PGP team members whose personal style could differ from the team aggregate.
 
 ### What this rules in / out
 
@@ -140,22 +140,26 @@ Hungarian_C rate, space-indent ratio, and line-comment density are each reported
 
 | Author | Hungarian_C | Space ratio | Line cmt/KLOC | z_H | z_S | z_L | Composite |
 |--------|-------------|-------------|---------------|-----|-----|-----|-----------|
-| satoshi-nov2008 | 9.6% | 100% | 136.5 | +1.83 | +1.11 | +1.60 | **+4.54** |
-| satoshi-v0.1.0 | 6.4% | 100% | 105.6 | +0.96 | +1.11 | +1.00 | **+3.06** |
-| satoshi (v0.1.3) | 6.4% | 100% | 105.1 | +0.95 | +1.11 | +0.99 | **+3.05** |
-| sassaman | 0.2% | 77% | 0.1 | -0.75 | +0.55 | -1.06 | -1.26 |
-| dai | 0.1% | 5% | 52.3 | -0.75 | -1.21 | -0.04 | -2.00 |
-| truecrypt | 0.1% | 9% | 34.6 | -0.76 | -1.10 | -0.39 | -2.25 |
-| back | 0.2% | 32% | 0.2 | -0.73 | -0.54 | -1.06 | -2.33 |
-| finney | 0.1% | 13% | 1.2 | -0.75 | -1.02 | -1.04 | -2.81 |
+| satoshi-nov2008 | 9.6% | 100% | 136.5 | +1.98 | +1.22 | +1.71 | **+4.92** |
+| satoshi-v0.1.0 | 6.4% | 100% | 105.6 | +1.06 | +1.22 | +1.08 | **+3.36** |
+| satoshi (v0.1.3) | 6.4% | 100% | 105.1 | +1.06 | +1.22 | +1.07 | **+3.35** |
+| sassaman | 0.2% | 77% | 0.1 | -0.71 | +0.64 | -1.10 | -1.17 |
+| pgp-6.5 | 0.8% | 29% | 45.4 | -0.53 | -0.57 | -0.17 | -1.27 |
+| dai | 0.1% | 5% | 52.3 | -0.72 | -1.18 | -0.02 | -1.92 |
+| truecrypt | 0.1% | 9% | 34.6 | -0.73 | -1.07 | -0.39 | -2.19 |
+| back | 0.2% | 32% | 0.2 | -0.70 | -0.49 | -1.10 | -2.29 |
+| finney | 0.1% | 13% | 1.2 | -0.72 | -0.99 | -1.08 | -2.79 |
 
-The composite shows a clean gap: all three Satoshi corpora score above +3.0; every candidate (named or wildcard) scores below -1.2. The three-dimensional MFC-training fingerprint is self-consistent across the 13-month Satoshi source window (Nov 2008 pre-release through Dec 2009 v0.1.3) and is absent from all candidate codebases analyzed. Sassaman ranks closest among candidates (+0.55 on space-indent due to his higher-than-average space ratio) but is still negative overall (-1.26) because his line-comment density is near-zero (0.1/KLOC vs Satoshi's 105/KLOC).
+The composite shows a clean gap: all three Satoshi corpora score above +3.3; every candidate (named or wildcard) scores below -1.1. The three-dimensional MFC-training fingerprint is self-consistent across the 13-month Satoshi source window (Nov 2008 pre-release through Dec 2009 v0.1.3) and is absent from all candidate codebases analyzed. Sassaman ranks closest among candidates (-1.17, with +0.64 on space-indent due to his higher-than-average space ratio) but is still negative overall because his line-comment density is near-zero (0.1/KLOC vs Satoshi's 105/KLOC).
+
+**Notable: PGP 6.5 (-1.27) ranks *below* Sassaman on the composite despite having the highest non-Satoshi Hungarian_C rate (0.8%, vs Sassaman's 0.2%).** The Hungarian_C advantage is overwhelmed by PGP's tab-indent and block-comment-heavy style. This is exactly the case the composite z-score was designed to discriminate: a single-axis test on Hungarian_C alone (thresholded at "≥0.5% suggests MFC training") would have produced a false positive on PGP 6.5; the three-axis composite correctly places PGP in mid-pack territory.
 
 ### What would strengthen this analysis
 
 - ✅ TrueCrypt 7.1a (Le Roux-era Windows encryption codebase): tested 2026-05-27. **Result:** TrueCrypt's Hungarian_C rate is 0.1% — same as all other candidates, 60× below Satoshi's 6.4%. TrueCrypt also uses 91% tab indentation vs Satoshi's 100% spaces, and a mixed comment style (22 block + 35 line per KLOC) vs Satoshi's line-heavy (1 block + 105 line per KLOC). **The Paul Le Roux / TrueCrypt wildcard reading is ruled out by the same fingerprint absence that rules out the named candidates.** The MFC fingerprint is more discriminating, not less, when tested against the most plausible Windows-C++ wildcard.
-- Still untested: e4m 2.0.1 (Le Roux's pre-TrueCrypt direct work, 1998–2000 — distinct from TrueCrypt 7.1a which was 2011), PGP for Windows 6.x source (archive.org/details/pgp_sourcecode), Bitcoin v0.1.0 source (Jan 2009, github.com/0xMagnuz/Bitcoin-v0.1 — would let us test intra-Satoshi style-drift Nov-2008 pre-release → Jan-2009 release → Dec-2009 v0.1.3).
-- Add a "MFC training fingerprint" composite score (Hungarian_C + space-indent + line-comment preference). Currently every candidate including TrueCrypt scores low on at least one of the three; only Satoshi scores high on all three.
+- ✅ PGP for Windows 6.5.1i (Network Associates, 1999): tested 2026-05-27. **Result:** PGP 6.5 Hungarian_C rate is 0.8% — the highest non-Satoshi result on record, 4× to 8× the named candidates, but still 8× below Satoshi's 6.4%. PGP 6.5 fails on the other two MFC fingerprint axes (71% tab indent, block-comment-heavy ratio inverted from Satoshi's line-comment-heavy style). Composite z = -1.27, *below* Sassaman at -1.17. **The "Satoshi was a PGP-team contributor" reading is not supported at the codebase house-style level. The composite z-score discriminates correctly where a single-axis Hungarian_C test would have produced a false positive on PGP 6.5.** See [`forensics/pgp-6.5-windows-mfc-test.md`](forensics/pgp-6.5-windows-mfc-test.md).
+- Still untested: e4m 2.0.1 (Le Roux's pre-TrueCrypt direct work, 1998–2000 — distinct from TrueCrypt 7.1a which was 2011; secondary sources describe e4m as MFC-styled, so this is the remaining wildcard for the Hungarian_C axis specifically), Bitcoin v0.1.0 source (Jan 2009, github.com/0xMagnuz/Bitcoin-v0.1 — would let us test intra-Satoshi style-drift Nov-2008 pre-release → Jan-2009 release → Dec-2009 v0.1.3).
+- ✅ Composite "MFC training fingerprint" z-score (Hungarian_C + space-indent + line-comment preference): implemented in commit `5289408`. Empirically validated 2026-05-27 by the PGP 6.5 test, which produced exactly the false-positive-on-Hungarian_C-alone case the composite was built to discriminate.
 
 ## Timestamp forensics (separate analysis, not stylometry)
 
