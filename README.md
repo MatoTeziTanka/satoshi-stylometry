@@ -1,6 +1,6 @@
 # satoshi-stylometry
 
-A reproducible Burrows' Delta analysis comparing the writings of "Satoshi Nakamoto" against five cypherpunk-era candidates: Adam Back, Hal Finney, Nick Szabo, Wei Dai, and Len Sassaman.
+A reproducible Burrows' Delta analysis comparing the writings of "Satoshi Nakamoto" against six candidates: Adam Back, Hal Finney, Nick Szabo, Wei Dai, Len Sassaman, and Craig Wright (the last as an adjudicated non-Satoshi per COPA v Wright [2024] EWHC 1198 (Ch), included as a quantitative reference-class control).
 
 > **Findings in one line:** different stylometric axes pick different candidates, and Satoshi's full fingerprint matches no single one. Prose-conversational (forum posts + emails) → **Hal Finney** (Δ 0.93). Prose-formal (the whitepaper) → **Len Sassaman** with a multi-author corpus caveat (Δ 0.87), then **Adam Back** (Δ 0.98). Code identifiers → **Adam Back** (Δ 0.78). Satoshi's MFC-style Hungarian C-prefix class naming (`CTransaction`, `CBlock`) at 6.4% **is not matched by any candidate** — PGP 6.5 (the closest non-Satoshi at 0.8%) is still 8× below Satoshi and fails on the other two MFC fingerprint axes. The honest reading is that "Satoshi" exhibits a *mosaic* of stylistic patterns that no single 2008-era candidate's published corpus fully reproduces.
 
@@ -27,11 +27,13 @@ This repo runs both methods side-by-side to show the difference. The headline nu
 
 | Candidate | Δ (function words, principled) | Notes |
 |-----------|--------------------------------|-------|
-| **Hal Finney**       | **0.98** | 16k-word corpus — reliable |
-| Nick Szabo           | 1.27     | 137k-word corpus — most reliable |
-| Len Sassaman         | 1.34     | 5.5k words, 4-AUTHOR — see caveat |
-| Adam Back            | 1.35     | 4.9k-word corpus — borderline |
-| Wei Dai              | 1.54     | 1.4k-word corpus — UNDER threshold |
+| **Hal Finney**       | **0.91** | 16k-word corpus — reliable |
+| Nick Szabo           | 1.18     | 137k-word corpus — most reliable |
+| Len Sassaman         | 1.28     | 5.5k words, 4-AUTHOR — see caveat |
+| Adam Back            | 1.29     | 4.9k-word corpus — borderline |
+| Sassaman-solo        | 1.39     | 4.4k-word verified solo corpus |
+| Wei Dai              | 1.48     | 1.4k-word corpus — UNDER threshold |
+| Craig Wright         | **1.55** | 20k-word corpus, 2024–2025 vintage — **LAST**, adjudicated non-Satoshi per COPA 2024 |
 
 ### Per-register Burrows' Delta (function words)
 
@@ -44,6 +46,8 @@ This repo runs both methods side-by-side to show the difference. The headline nu
 | P2P Foundation     | 866    | (too small to be meaningful) | | | | |
 
 **The whitepaper row needs reading carefully.** The Mixmaster-RFC Sassaman corpus (multi-author IETF draft) shows Δ=0.86 — appears first. But a **verified solo-Sassaman corpus** (4,383 words across two single-author Sassaman papers) shows Δ=1.03 — third place. The "Sassaman first on whitepaper" finding was substantially a Mixmaster-coauthor-blend artifact. With clean solo corpus, **Adam Back is first on the whitepaper (Δ=0.97)**, Sassaman-solo third. See [`forensics/sassaman-solo-corpus-rerun.md`](forensics/sassaman-solo-corpus-rerun.md) for the full retraction analysis.
+
+**Craig Wright (control)**: Wright ranks **last (7 of 7) in every Satoshi prose register** — BitcoinTalk Δ=1.46, Emails Δ=1.47, Forum aggregate Δ=1.46, Whitepaper Δ=1.24, Aggregate Δ=1.55. The largest single-candidate Δ in the corpus. Wright was adjudicated NOT to be Satoshi by COPA v Wright [2024]; the quantitative stylometric result independently confirms the judicial finding. The 15-year temporal gap (Wright corpus 2024–2025 vs Satoshi 2008–2009) means the observed Δ is likely an *under-estimate* of the genuine 2008-vs-2008 distance. See [`forensics/wright-cross-axis-test.md`](forensics/wright-cross-axis-test.md).
 
 ### Sassaman caveat — the result has now been re-tested with a solo corpus
 
@@ -97,7 +101,7 @@ This analysis cannot distinguish between these. It can only rule out Szabo as th
 
 Source code is a different stylometric axis from prose. Burrows' Delta on prose function-words doesn't transfer cleanly — every codebase has its own vocabulary. Instead, we extract programming-language-invariant style features and run a separate analysis.
 
-Code corpora pulled by `src/pull_corpus.py` (additions in commit history): Satoshi (Bitcoin 0.1.3 ALPHA Dec 2009, 13.7k LOC), satoshi-v0.1.0 (Jan 2009 release, 16.6k LOC), satoshi-nov2008 (private pre-release, 3.3k LOC), Back (Hashcash, 9.1k LOC C, 34 files), Finney (RPOW, 10.4k LOC C, 40 files), Dai (Crypto++ 5.2.1, 43.6k LOC C++, 191 files), Sassaman (Mixmaster, 20.9k LOC C, 44 files), TrueCrypt 7.1a (91.8k LOC C/C++, 377 files — wildcard "Le Roux era" Windows-encryption corpus added 2026-05-27), PGP-6.5 (Network Associates PGP for Windows 6.5.1i, 1999, 567k LOC C/C++, 1,884 files — wildcard "1990s Windows-C++ MFC-era cypherpunk-adjacent team codebase" added 2026-05-27, see [`forensics/pgp-6.5-windows-mfc-test.md`](forensics/pgp-6.5-windows-mfc-test.md)), e4m 2.01 (Paul Le Roux, 1999, 18.5k LOC pure C, 93 files — pre-TrueCrypt direct single-author work, closes the Le Roux wildcard ruling alongside TrueCrypt 7.1a, see [`forensics/e4m-mfc-test.md`](forensics/e4m-mfc-test.md)). The three Satoshi corpora span the 13-month launch window and enable an intra-Satoshi style-drift test; see [`forensics/intra-satoshi-style-drift.md`](forensics/intra-satoshi-style-drift.md). See [`code-corpus/*/SOURCE.md`](code-corpus/) for provenance per author.
+Code corpora pulled by `src/pull_corpus.py` (additions in commit history): Satoshi (Bitcoin 0.1.3 ALPHA Dec 2009, 13.7k LOC), satoshi-v0.1.0 (Jan 2009 release, 16.6k LOC), satoshi-nov2008 (private pre-release, 3.3k LOC), Back (Hashcash, 9.1k LOC C, 34 files), Finney (RPOW, 10.4k LOC C, 40 files), Dai (Crypto++ 5.2.1, 43.6k LOC C++, 191 files), Sassaman (Mixmaster, 20.9k LOC C, 44 files), TrueCrypt 7.1a (91.8k LOC C/C++, 377 files — wildcard "Le Roux era" Windows-encryption corpus added 2026-05-27), PGP-6.5 (Network Associates PGP for Windows 6.5.1i, 1999, 567k LOC C/C++, 1,884 files — wildcard "1990s Windows-C++ MFC-era cypherpunk-adjacent team codebase" added 2026-05-27, see [`forensics/pgp-6.5-windows-mfc-test.md`](forensics/pgp-6.5-windows-mfc-test.md)), e4m 2.01 (Paul Le Roux, 1999, 18.5k LOC pure C, 93 files — pre-TrueCrypt direct single-author work, closes the Le Roux wildcard ruling alongside TrueCrypt 7.1a, see [`forensics/e4m-mfc-test.md`](forensics/e4m-mfc-test.md)), Wright-BSV (Bitcoin SV v1.0.0, 2020-01-15, 159.9k LOC C/C++, 568 files — adjudicated non-Satoshi reference-class control with inheritance-confound caveat; the snapshot contains 245 Satoshi-authored commits + the full Bitcoin Core lineage, see [`forensics/wright-cross-axis-test.md`](forensics/wright-cross-axis-test.md)). The three Satoshi corpora span the 13-month launch window and enable an intra-Satoshi style-drift test; see [`forensics/intra-satoshi-style-drift.md`](forensics/intra-satoshi-style-drift.md). See [`code-corpus/*/SOURCE.md`](code-corpus/) for provenance per author.
 
 ### Headline finding: Satoshi's code style is mosaicked
 
@@ -232,6 +236,7 @@ The candidate that the cross-axis result narrows toward is **a person who is:**
 - **"Satoshi was Len Sassaman."** Sassaman ranks first on the multi-author Mixmaster RFC (Δ=0.87, retracted on solo re-run at Δ=1.03), and his composite MFC z-score (−0.90) is the closest among all candidates but still deeply negative. The "temporal coincidence" argument is weak (71 days between Satoshi's last verified private email per Hearn-disclosure and Sassaman's death, not the originally claimed 8 days). See [`forensics/sassaman-solo-corpus-rerun.md`](forensics/sassaman-solo-corpus-rerun.md).
 - **"Satoshi was Nick Szabo."** Szabo is **not first on any axis** in this analysis. On the whitepaper specifically (the corpus the Aston 2014 result was strongest on), Szabo ranks **last (6 of 6)** under principled function-word features. He moves to mid-pack under topic-contaminated features, but the rank shift is attributable to subject-vocabulary overlap, not stylistic similarity. See [`forensics/topic-control-aston-2014.md`](forensics/topic-control-aston-2014.md).
 - **"Satoshi was Paul Le Roux."** Ruled out by two independent codebases (TrueCrypt 7.1a 2011 team derivative AND e4m 2.01 1999 direct single-author). Both fail every testable MFC fingerprint axis. See [`forensics/e4m-mfc-test.md`](forensics/e4m-mfc-test.md). The Le Roux ruling rests on two-codebase agreement and survives the "but TrueCrypt diverged from his personal style" objection.
+- **"Satoshi was Craig Wright."** Ruled out judicially by COPA v Wright [2024] EWHC 1198 (Ch) (Mellor J found Wright committed forgery and gave false evidence; Wright enjoined from further UK Satoshi-litigation). Independently confirmed by this repo's stylometric methodology: **Wright is LAST (rank 7 of 7) in every Satoshi prose register** under principled function-word features, with aggregate Δ=1.55 — the largest single-candidate Δ in the entire corpus, exceeding even Dai's small-corpus result. Under topic-contaminated features Wright moves only one rank to 6 of 7. The Wright Bitcoin SV code-snapshot composite z = +2.83 *appears* Satoshi-like, but this is the **inheritance confound**: BSV literally contains 245 Satoshi-authored commits + the full Bitcoin Core lineage; Wright authored zero personal commits in v1.0.0; the high z-score reflects inherited Satoshi house style, not Wright's authorship. See [`forensics/wright-cross-axis-test.md`](forensics/wright-cross-axis-test.md).
 
 ### Forensics-doc index
 
@@ -249,6 +254,9 @@ Per-axis writeups, ordered by topic:
 
 **Hidden-artifact and cross-channel forensics**
 - [`forensics/hidden-artifacts-survey.md`](forensics/hidden-artifacts-survey.md) — four-axis survey of PGP keys, PDF metadata + fonts, source-code developer artifacts, and commit-message register. Top findings: GnuPG MingW32 version, Windows XP UA literal, PDF font fingerprint = Win XP SP2+ with Microsoft Publisher, en-GB OpenOffice locale, UTC-7 → UTC-6 offset shift.
+
+**Adjudicated non-Satoshi reference class**
+- [`forensics/wright-cross-axis-test.md`](forensics/wright-cross-axis-test.md) — Craig Wright tested as a reference-class control against the cross-axis methodology. Result: last in every Satoshi prose register (confirms COPA 2024 quantitatively). Code-axis result inheritance-confounded (Bitcoin SV contains Satoshi's original code).
 
 **Cross-axis candidate analyses**
 - [`forensics/nyt-april-2026-adam-back.md`](forensics/nyt-april-2026-adam-back.md) — NYT 2026 Back claim, convergence + divergence per axis

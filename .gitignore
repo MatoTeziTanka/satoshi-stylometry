@@ -14,6 +14,7 @@ corpus/sassaman/*.txt
 corpus/sassaman-solo/*.txt
 corpus/haber/*.txt
 corpus/stornetta/*.txt
+corpus/wright/*.txt
 
 # Source-code corpora are reassembled at runtime via per-corpus pull
 # instructions in code-corpus/<author>/SOURCE.md. NOTHING from a corpus
