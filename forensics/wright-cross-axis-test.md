@@ -104,16 +104,28 @@ Bitcoin SV is a fork of Bitcoin Core (via the August 2017 BCH fork and the Novem
 
 The result is a textbook case of a confounded stylometric test: the corpus boundary (everything tagged `v1.0.0` in BSV) does not match the analytical claim (Wright's house style). The clean test would require a **diff-only corpus** — BSV commits added since the 2018 BCH→BSV fork point, excluding all Satoshi/Bitcoin Core inheritance.
 
-### The right next step (diff-only Wright corpus, not done here)
+### The right next step (diff-only Wright corpus) — DONE 2026-05-28
 
-The honest read of this analysis is that **the code axis cannot rule Wright in or out** given the available codebase. The snapshot-style code-axis test is *structurally unable* to discriminate Wright's house style from Satoshi's inherited house style. To get a clean Wright-house-style code signal, future work would need to:
+The honest read of the snapshot test was that **the code axis cannot rule Wright in or out** given inheritance confounding. The diff-only follow-up has now been completed — see [`forensics/wright-bsv-diff-test.md`](wright-bsv-diff-test.md) for the full writeup.
 
-1. Identify the 2018 BCH→BSV fork commit (probably tag `v0.1.0` or similar in the BSV repo).
-2. Extract only commits authored *after* that fork point AND authored by nChain engineers (excluding any remaining Satoshi/Core-lineage cherry-picks).
-3. Build a corpus from those commits' net diff (added lines, not the full inherited base).
-4. Run the MFC composite on that diff-only corpus.
+**Result summary:**
 
-This is non-trivial and was out of scope for this 2026-05-27 fan-out. Flagged as a methodologically warranted follow-up.
+| Corpus | Hungarian_C | SpaceRatio | LineCmt/KLOC | Composite z |
+|--------|-------------|-----------|--------------|-------------|
+| satoshi-nov2008 | 9.6% | 100% | 136.5 | +4.53 |
+| **wright-bsv-diff (BSV-team net-new only)** | **6.3%** | **99.9%** | **135.6** | **+3.53** |
+| satoshi-v0.1.0 | 6.4% | 100% | 105.6 | +2.98 |
+| satoshi | 6.4% | 100% | 105.1 | +2.97 |
+| wright-bsv (full, inherited) | 4.8% | 99.7% | 101.9 | +2.43 |
+| (other named candidates) | ≤0.8% | ≤77% | ≤52 | −1.47 to −3.04 |
+
+The diff-only corpus (91 files, 18.4k LOC, zero Satoshi commits, exclusively authored by 15 named nChain/Slovenia engineers — Richard Mills, Arkadiusz Kolodziejski, Chris Gibson, Daniel Connolly, Domen Vrankar, et al.) scored **higher** on the composite than the full inheritance-loaded BSV corpus.
+
+**Interpretation:** The MFC composite is a measure of *adoptable conventions*, not a unique author signature. The BSV team consciously preserved Satoshi's `C[Capital]` Hungarian naming, 100% space indentation, and high `//` line-comment density when writing new files — consistent with their stated mission ("Satoshi's Vision") and standard software-engineering practice when extending an inherited codebase.
+
+This **does NOT change the Wright-is-not-Satoshi conclusion.** The prose axis (Δ=1.55 LAST in every Satoshi register) is more discriminating because prose function-word distributions are harder to consciously mimic than code naming conventions. The code-axis finding now reads: *the BSV team adopted Satoshi-style conventions, which says nothing about Wright personally (he authored none of these files) and is consistent with deliberate style preservation rather than authorship.*
+
+The methodological lesson: the composite is **necessary but not sufficient.** It rules OUT candidates whose conventions differ (all named cypherpunks, sitting at −1.47 to −3.04) but cannot rule IN any author whose conventions match.
 
 ## Cross-axis ruling on Wright
 
@@ -123,34 +135,47 @@ This is non-trivial and was out of scope for this 2026-05-27 fan-out. Flagged as
 | Prose function-word Δ (whitepaper) | Δ=1.24, rank 7 of 7 (LAST) | **Quantitatively rules Wright OUT** |
 | Prose function-word Δ (commit messages) | Not in this analysis; Wright has no 2008–2009 commit messages in the corpus | n/a |
 | Prose top-150 (topic-contaminated) | Δ=1.22, rank 6 of 7 | **Wright stays bottom-half even under his most favorable methodology** |
-| Code identifier Δ | Δ=0.91, rank 4 of 8 non-Satoshi candidates | Misleading — inheritance-confounded (BSV contains Satoshi's code) |
-| MFC composite z-score | +2.83 (4th overall, only behind 3 Satoshi corpora) | Misleading — inheritance-confounded (see above) |
+| Code identifier Δ (BSV full) | Δ=0.85, rank 4 of 8 non-Satoshi | Inheritance-confounded (BSV contains 245 Satoshi commits) |
+| MFC composite z-score (BSV full) | +2.43 | Inheritance-confounded |
+| MFC composite z-score (BSV diff-only) | **+3.53** | Style mimicry — BSV team preserved Satoshi conventions in net-new code. Does NOT identify Wright as Satoshi; reveals the composite measures conventions not signatures. See [`wright-bsv-diff-test.md`](wright-bsv-diff-test.md). |
 | Hyphenation overlap | Not run on Wright in this analysis (Wright corpus too small for the methodology and from a different era) | n/a |
 | Timestamp distribution | Not testable — Wright's 2024–2025 corpus is not in the Bitcoin-mining era | n/a |
 
 **Cross-axis verdict: WRIGHT IS NOT SATOSHI**, confirmed quantitatively by the prose axis (last in every register) and consistent with the COPA legal judgment.
 
-The code-axis Wright-BSV result is **uninformative as positive evidence** because the BSV codebase contains Satoshi's original code by direct inheritance. It is **not evidence that Wright is Satoshi**; it is evidence that BSV's snapshot includes Satoshi's snapshot. Anyone forking Bitcoin Core would produce a similar result.
+The code-axis Wright-BSV result (both full +2.43 and diff-only +3.53) is **uninformative as positive evidence about Wright** because:
+
+1. Wright authored zero commits in BSV — the codebase reflects the nChain team's style, not his personal style.
+2. The full corpus includes Satoshi's original code by direct inheritance (245 Satoshi commits + Bitcoin Core lineage).
+3. The diff-only corpus removes the inherited code but reveals deliberate convention mimicry by the BSV team — they adopted Satoshi's `C[Capital]` naming + spaces + `//` density in net-new code, consistent with their "Satoshi's Vision" mission.
+
+The diff-only finding is methodologically clarifying: the MFC composite measures *adoptable conventions*, not unique authorship. It rules OUT candidates whose conventions differ (all named cypherpunks) but cannot rule IN any author whose conventions match Satoshi.
 
 ## Why this matters as a stress test
 
 A stylometric methodology that produced "Wright IS close to Satoshi" on the prose axis would be a failed methodology — COPA v Wright [2024] established Wright is not Satoshi through forgery findings, expert evidence, and document discovery beyond what stylometry can deliver. The repo's prose methodology produces the correct quantitative ruling (Wright last) against an external ground truth.
 
-The code-axis result is more interesting as a methodological lesson: **forked codebases pollute stylometric signal by direct inheritance.** This affects any future test involving a Bitcoin-Core-lineage codebase (BCH, BSV, Bitcoin XT, Bitcoin Knots, Bitcoin ABC). The honest reading is "the snapshot doesn't discriminate; the diff would."
+The code-axis result is more interesting as a methodological lesson — two-fold:
+
+1. **Forked codebases pollute stylometric signal by direct inheritance.** This affects any future test involving a Bitcoin-Core-lineage codebase (BCH, BSV, Bitcoin XT, Bitcoin Knots, Bitcoin ABC). The diff-only methodology — extract files added after the fork point — is the structural fix.
+
+2. **The MFC composite is a convention-test, not a signature-test.** The diff-only test showed BSV-team net-new code scores +3.53 (matching Satoshi v0.1.0 within 0.5) because the team deliberately preserved Satoshi-style conventions. This means the composite's discriminating power lies in *ruling out* candidates whose style differs (all named cypherpunks fail). It cannot *identify* Satoshi from a high score alone.
 
 ## Limitations
 
 1. **Temporal gap.** Wright corpus is 2024–2025; Satoshi is 2008–2009. A 15-year gap. Authorial style drifts over time; the observed Wright Δ is likely an under-estimate of the genuine 2008-vs-2008 distance.
 2. **Mixed register.** Wright corpus pools academic preprints with conversational blog posts. The repo handles this by per-register Satoshi sub-corpus analysis (Wright Δ is last in every register, so the pooling doesn't change the conclusion).
 3. **Sole-authorship caveat for arXiv preprints.** Wright's arXiv preprints are formally bylined sole-author, but ghostwriter / editor involvement during his nChain tenure (2017–2024) is documented in some contemporaneous press. The June 2025 arXiv preprints post-date COPA and the winding down of his formal nChain role, making them more likely sole-authored in practice. The CoinGeek blog posts are first-person narrative and more reliably sole-authored.
-4. **No code diff-only analysis.** The BSV snapshot test is inheritance-confounded; the diff-only follow-up was out of scope.
+4. ~~**No code diff-only analysis.** The BSV snapshot test is inheritance-confounded; the diff-only follow-up was out of scope.~~ — Resolved 2026-05-28; see [`wright-bsv-diff-test.md`](wright-bsv-diff-test.md). Result: BSV-team net-new code scores +3.53 (style mimicry, not Wright-personal evidence).
 5. **Wright corpus excludes legal-process material.** COPA witness statements + cross-examination transcripts would be the most relevant Satoshi-claim-era Wright prose but are paywalled or under court protection. The 2024–2025 arXiv + CoinGeek material is the best accessible alternative.
 
 ## References
 
 - COPA v Wright [2024] EWHC 1198 (Ch), Mellor J — judicial finding that Wright is not Satoshi
 - [`corpus/wright/SOURCE.md`](../corpus/wright/SOURCE.md) — prose corpus provenance
-- [`code-corpus/wright-bsv/SOURCE.md`](../code-corpus/wright-bsv/SOURCE.md) — BSV codebase provenance including inheritance caveat
+- [`code-corpus/wright-bsv/SOURCE.md`](../code-corpus/wright-bsv/SOURCE.md) — BSV v1.0.0 codebase provenance including inheritance caveat
+- [`code-corpus/wright-bsv-diff/SOURCE.md`](../code-corpus/wright-bsv-diff/SOURCE.md) — BSV-team net-new (diff-only) corpus provenance
+- [`forensics/wright-bsv-diff-test.md`](wright-bsv-diff-test.md) — diff-only follow-up analysis (2026-05-28)
 - [`results/results.json`](../results/results.json) — prose Δ matrix including Wright row
-- [`results/code-style-features.json`](../results/code-style-features.json) — code feature matrix including wright-bsv row
+- [`results/code-style-features.json`](../results/code-style-features.json) — code feature matrix including wright-bsv + wright-bsv-diff rows
 - [`forensics/hidden-artifacts-survey.md`](hidden-artifacts-survey.md) — four-axis Windows + locale + timezone consensus from the same 2026-05-27 fan-out session

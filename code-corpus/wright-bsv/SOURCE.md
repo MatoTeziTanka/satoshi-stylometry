@@ -167,10 +167,23 @@ Two hypotheses are being tested:
    ancestor of this code. The negative result (composite high on both
    Satoshi and BSV) is the *evidence-of-inheritance* signal.
 
-A more discriminating test would be running the analysis on **post-fork
-diff-only** code (commits added to BSV after the August-2018 split from
-Bitcoin ABC), but the brief is for the v1.0.0 snapshot corpus, not for
-diff-extraction. Diff-only analysis is a follow-up task.
+A more discriminating test is running the analysis on **post-fork
+diff-only** code (files added to BSV after the August-2018 split from
+Bitcoin ABC). This follow-up was completed 2026-05-28 — see
+[`code-corpus/wright-bsv-diff/SOURCE.md`](../wright-bsv-diff/SOURCE.md)
+and [`forensics/wright-bsv-diff-test.md`](../../forensics/wright-bsv-diff-test.md).
+
+**Result:** 91 net-new files (18.4k LOC, zero Satoshi commits,
+exclusively authored by 15 named nChain/Slovenia engineers — Richard
+Mills, Arkadiusz Kolodziejski, Chris Gibson, Daniel Connolly, Domen
+Vrankar, et al.) score composite z = **+3.53** — *higher* than this
+full-snapshot's +2.43. The nChain team consciously preserved Satoshi's
+`C[Capital]` Hungarian naming + 100% space indentation + `//` line-comment
+density in net-new code, consistent with BSV's stated "Satoshi's Vision"
+mission. **The MFC composite is therefore a measure of adoptable
+conventions, not unique authorship**; it rules OUT candidates whose
+conventions differ from Satoshi but cannot rule IN any author whose
+conventions match.
 
 ## Caveats (read before using)
 
